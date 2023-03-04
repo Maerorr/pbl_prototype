@@ -2,14 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+
 
 public class Movement : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] float speed;
     [SerializeField] private float crouchingSpeed;
+    [SerializeField] private float sprintingSpeed;
     [SerializeField] float rotationSmoothTime;
+    private float currentSpeed;
+    private bool isSprinting = false;
 
     [Header("Gravity")]
     [SerializeField] float gravity = 9.8f;
@@ -38,10 +41,12 @@ public class Movement : MonoBehaviour
         cam = Camera.main;
         var eyesLocal = eyes.localPosition;
         defaultEyesPosition = new Vector3(eyesLocal.x, eyesLocal.y, eyesLocal.z);
+        currentSpeed = speed;
     }
 
     private void Update()
     {
+        Sprint();
         HandleMovement();
         HandleGravityAndJump();
         Crouch();
@@ -59,13 +64,14 @@ public class Movement : MonoBehaviour
 
             //move in direction of rotation
             Vector3 rotatedMovement = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
-            rotatedMovement.y = -0.1f;
-            controller.Move(rotatedMovement * speed * Time.deltaTime);
+            rotatedMovement.y = -0.02f;
+            controller.Move(rotatedMovement * currentSpeed * Time.deltaTime);
         }
     }
 
     void HandleGravityAndJump()
     {
+        Debug.Log(controller.isGrounded);
         //apply groundedGravity when the Player is Grounded
         if (controller.isGrounded && velocityY < 0f)
             velocityY = -groundedGravity;
@@ -81,13 +87,13 @@ public class Movement : MonoBehaviour
         {
             velocityY -= gravity * gravityMultiplier * Time.deltaTime;
         }
-        Debug.Log(controller.isGrounded);
+        Debug.Log(velocityY);
         controller.Move(Vector3.up * velocityY * Time.deltaTime);
     }
 
     void Crouch()
     {
-        if (crouchingCooldown == 0)
+        if (crouchingCooldown == 0 && !isSprinting)
         {
             if (Input.GetKey("left ctrl"))
             {
@@ -97,6 +103,7 @@ public class Movement : MonoBehaviour
                     capsule.localScale = new Vector3(1, 0.75f, 1);
                     eyes.localPosition = defaultEyesPosition - new Vector3(0, 0.125f, 0);
                     isCrouching = true;
+                    currentSpeed = crouchingSpeed;
                 }
                 else
                 {
@@ -104,9 +111,27 @@ public class Movement : MonoBehaviour
                     capsule.localScale = new Vector3(1, 1, 1);
                     eyes.localPosition = defaultEyesPosition;
                     isCrouching = false;
+                    currentSpeed = speed;
                 }
 
                 crouchingCooldown = 50;
+            }
+        }
+    }
+
+    void Sprint()
+    {
+        if (!isCrouching)
+        {
+            if (Input.GetKey("left shift"))
+            {
+                currentSpeed = sprintingSpeed;
+                isSprinting = true;
+            }
+            else
+            {
+                currentSpeed = speed;
+                isSprinting = false;
             }
         }
     }

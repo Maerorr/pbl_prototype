@@ -4268,10 +4268,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   crouchingSpeed: 3
+  sprintingSpeed: 7
   rotationSmoothTime: 0.1
   gravity: 9.8
   gravityMultiplier: 2
-  groundedGravity: 13.36
+  groundedGravity: 2
   jumpHeight: 3
   capsule: {fileID: 1774636717}
   eyes: {fileID: 1693447872}

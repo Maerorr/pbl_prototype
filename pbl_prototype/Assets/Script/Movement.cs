@@ -26,6 +26,7 @@ public class Movement : MonoBehaviour
     float currentAngle;
     float currentAngleVelocity;
 
+    [SerializeField]
     private Camera cam;
     public Transform capsule;
     public Transform eyes;
@@ -38,7 +39,6 @@ public class Movement : MonoBehaviour
     {
         //getting reference for components on the Player
         controller = GetComponent<CharacterController>();
-        cam = Camera.main;
         var eyesLocal = eyes.localPosition;
         defaultEyesPosition = new Vector3(eyesLocal.x, eyesLocal.y, eyesLocal.z);
         currentSpeed = speed;

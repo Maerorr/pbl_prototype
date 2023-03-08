@@ -24,6 +24,11 @@ public class SplitScreenController : MonoBehaviour
 
     void Update()
     {
+        SwitchSplitScreen();
+    }
+
+    private void SwitchSplitScreen() 
+    {
         if (Input.GetKey(","))
         {
             playerCamera.rect = fullScreen;

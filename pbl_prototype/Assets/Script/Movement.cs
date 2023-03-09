@@ -71,7 +71,7 @@ public class Movement : MonoBehaviour
 
     void HandleGravityAndJump()
     {
-        Debug.Log(controller.isGrounded);
+
         //apply groundedGravity when the Player is Grounded
         if (controller.isGrounded && velocityY < 0f)
             velocityY = -groundedGravity;
@@ -87,7 +87,6 @@ public class Movement : MonoBehaviour
         {
             velocityY -= gravity * gravityMultiplier * Time.deltaTime;
         }
-        Debug.Log(velocityY);
         controller.Move(Vector3.up * velocityY * Time.deltaTime);
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.ProBuilder;
 using Transform = UnityEngine.Transform;
@@ -15,16 +16,31 @@ public class Hacker : MonoBehaviour
     private float lastMove = 0f;
     
     private CameraScript currentCamera;
+    private CameraScript lookAtCamera;
+
+    private bool isLookingAtCamera = false;
 
     private void Start()
     {
         MoveToNewCamera(GameObject.Find("Camera").GetComponent<CameraScript>());
+        lookAtCamera = currentCamera;
     }
 
     void FixedUpdate()
     {
-        //RotateCamera();
+        RotateCamera();
         ShootRaycast();
+        
+        TryMovingToNewCamera();
+    }
+
+    private void TryMovingToNewCamera()
+    {
+        if (!isLookingAtCamera) return;
+        if (!Input.GetKey(KeyCode.F)) return;
+        if (Time.time - lastMove < moveCooldown) return;
+        
+        MoveToNewCamera(lookAtCamera);
     }
 
     private void MoveToNewCamera(CameraScript newCamera)
@@ -47,14 +63,25 @@ public class Hacker : MonoBehaviour
     {
         Transform currentTransform = transform;
         Vector3 shootPosition = currentTransform.position + currentTransform.forward;
-        Debug.DrawRay(shootPosition, currentTransform.forward * 100f, Color.green);
+
         if (!Physics.Raycast(currentTransform.position, currentTransform.forward, out var hit)) return;
-        if (!hit.transform.gameObject.TryGetComponent(out CameraScript foundCamera)) return;
-        if (!Input.GetKey(KeyCode.Space)) return;
-        Debug.Log($"Last: {lastMove}, Current: {Time.time}");
-        if (lastMove + moveCooldown < Time.time)
+        if (hit.transform.gameObject.TryGetComponent(out CameraScript foundCamera))
         {
-            MoveToNewCamera(foundCamera);
+            isLookingAtCamera = true;
+            lookAtCamera = foundCamera;
+            lookAtCamera.SwitchHighlight(true);
         }
+        //else if (hit.transform.gameObject.TryGetComponent(out Hackable hackableThing))
+        //{
+        //    if (Input.GetKey(KeyCode.E))
+        //    {
+        //        hackableThing.OnHack();
+        //    }
+        //}
+
+        if (!isLookingAtCamera) return;
+        
+        lookAtCamera.SwitchHighlight(false);
+        isLookingAtCamera = false;
     }
 }

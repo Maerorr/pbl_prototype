@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 1943642144353881359}
   - component: {fileID: 4371778713692185591}
   - component: {fileID: 87553456103403835}
-  - component: {fileID: 6157928273226801463}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -84,20 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6157928273226801463
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123215022487070737}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1887587159578184065
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3455844087161078874}
   - component: {fileID: 3006759300379184904}
+  - component: {fileID: 2350066859200350634}
   m_Layer: 0
   m_Name: EnemyGuard
   m_TagString: Untagged
@@ -227,8 +213,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 652a752bfcd5efa469dc14e5d7fbf8a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPoints: []
-  speed: 0
-  visionRange: 0
-  visionAngle: 0
-  Player: {fileID: 0}
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  speed: 3
+  visionRange: 10
+  visionAngle: 30
+  player: {fileID: 0}
+--- !u!136 &2350066859200350634
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8072577820667163116}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

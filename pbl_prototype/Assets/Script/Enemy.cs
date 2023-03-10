@@ -55,10 +55,10 @@ public class Enemy : MonoBehaviour
 
     }
 
-    void OnDeath()
+    public void OnDeath()
     {
         state = EnemyState.Dead;
-        gameObject.transform.Find("Capsule").GetComponent<Collider>().enabled = false;
+        gameObject.SetActive(false);
     }
 
     void OnAlerted()
@@ -79,6 +79,7 @@ public class Enemy : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, visionRange))
             {
+                Debug.Log($"cokolwiek:{hit.transform.gameObject}");
                 if (hit.transform.gameObject == player)
                 {
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.green);

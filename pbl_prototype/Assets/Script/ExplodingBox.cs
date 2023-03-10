@@ -6,24 +6,24 @@ public class ExplodingBox : MonoBehaviour, IHackable
 {
     private bool IsHacked = false;
     private bool HasExploded = false;
+    
+    [SerializeField] private float explosionRadius = 5f;
 
     public void OnHack()
     {
         IsHacked = true;
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (IsHacked && !HasExploded)
+        var colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        
+        for (int i = 0; i < colliders.Length; i++)
         {
-            if (other.gameObject.TryGetComponent(out Enemy enemy))
+            var currentCollider = colliders[i];
+            
+            if (currentCollider.TryGetComponent(out Enemy enemy))
             {
-                if (enemy != null)
-                {
-                    //kill Enemy
-                    HasExploded = true;
-                }
+                enemy.OnDeath();
             }
         }
     }
+    
 }

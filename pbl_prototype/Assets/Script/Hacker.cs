@@ -45,6 +45,7 @@ public class Hacker : MonoBehaviour
 
     private void MoveToNewCamera(CameraScript newCamera)
     {
+        currentCamera?.SwitchHighlight(false);
         currentCamera = newCamera;
         Transform cameraTransform = currentCamera.GetCameraTransform();
         transform.position = cameraTransform.position;
@@ -63,6 +64,8 @@ public class Hacker : MonoBehaviour
     {
         Transform currentTransform = transform;
         Vector3 shootPosition = currentTransform.position + currentTransform.forward;
+        
+        Debug.DrawRay(shootPosition, currentTransform.forward * 100, Color.red);
 
         if (!Physics.Raycast(currentTransform.position, currentTransform.forward, out var hit)) return;
         if (hit.transform.gameObject.TryGetComponent(out CameraScript foundCamera))
@@ -71,17 +74,17 @@ public class Hacker : MonoBehaviour
             lookAtCamera = foundCamera;
             lookAtCamera.SwitchHighlight(true);
         }
-        //else if (hit.transform.gameObject.TryGetComponent(out Hackable hackableThing))
-        //{
-        //    if (Input.GetKey(KeyCode.E))
-        //    {
-        //        hackableThing.OnHack();
-        //    }
-        //}
-
-        if (!isLookingAtCamera) return;
-        
-        lookAtCamera.SwitchHighlight(false);
-        isLookingAtCamera = false;
+        else if (hit.transform.gameObject.TryGetComponent(out IHackable hackableThing))
+        {
+            if (Input.GetKey(KeyCode.E))
+            {
+                hackableThing.OnHack();
+            }
+        }
+        else if (isLookingAtCamera)
+        {
+            lookAtCamera.SwitchHighlight(false);
+            isLookingAtCamera = false;
+        }
     }
 }

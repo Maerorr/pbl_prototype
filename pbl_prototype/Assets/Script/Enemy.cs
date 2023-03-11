@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     public float speed = 10;
     public float visionRange = 10;
     public float visionAngle = 30;
+    private bool isLookingAtTarget = false;
 
     [SerializeField] private GameObject player;
     
@@ -45,11 +46,19 @@ public class Enemy : MonoBehaviour
             //patrol between given points
             if (transform.position != patrolPoints[current].position)
             {
-                MoveTowardsCurrentPoint();
+                if (!isLookingAtTarget)
+                {
+                    LookAtCurrentPoint();
+                }
+                else
+                {
+                    MoveTowardsCurrentPoint();
+                }
             }
             else
             {
                 current = (current + 1) % patrolPoints.Length;
+                isLookingAtTarget = false;
             }
         }
 
@@ -79,7 +88,6 @@ public class Enemy : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, visionRange))
             {
-                Debug.Log($"cokolwiek:{hit.transform.gameObject}");
                 if (hit.transform.gameObject == player)
                 {
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.green);
@@ -103,6 +111,11 @@ public class Enemy : MonoBehaviour
         var targetWithoutY = new Vector3(enemyPosition.x, currentPosition.y, enemyPosition.z);
         transform.rotation = Quaternion.Lerp(transform.rotation,
             Quaternion.LookRotation(targetWithoutY - currentPosition), 0.01f);
+        
+        if (Vector3.Dot(transform.forward.normalized,(enemyPosition - currentPosition).normalized) > 0.99 )
+        {
+            isLookingAtTarget = true;
+        }
     }
     
     void MoveTowardsCurrentPoint()

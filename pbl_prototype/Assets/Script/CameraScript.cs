@@ -29,8 +29,12 @@ public class CameraScript : MonoBehaviour
     
     public void RotateCamera(float sensitivity)
     {
-        yaw += sensitivity * Input.GetAxis("Mouse X");
-        pitch -= sensitivity * Input.GetAxis("Mouse Y");
+        
+        float inputX = Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
+        float inputY = Input.GetKey(KeyCode.DownArrow) ? -1 : Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
+
+        yaw += sensitivity * inputX;
+        pitch -= sensitivity * inputY;
 
         yaw = Mathf.Clamp(yaw, startYaw - 45f, startYaw + 45f);
         pitch = Mathf.Clamp(pitch, startPitch - 45f, startPitch + 45f);

@@ -55,18 +55,23 @@ public class Movement : MonoBehaviour
     private void HandleMovement()
     {
         //capturing Input from Player
-        Vector3 movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+        float inputX = Input.GetKey(KeyCode.A) ? -1 : Input.GetKey(KeyCode.D) ? 1 : 0;
+        float inputZ = Input.GetKey(KeyCode.S) ? -1 : Input.GetKey(KeyCode.W) ? 1 : 0;
+
+        
+        Vector3 movement = new Vector3(inputX, 0, inputZ).normalized;
         if (movement.magnitude >= 0.1f)
         {
-            float targetAngle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
-            currentAngle = Mathf.SmoothDampAngle(currentAngle, targetAngle, ref currentAngleVelocity, rotationSmoothTime);
-            transform.rotation = Quaternion.Euler(0, currentAngle, 0);
-
-            //move in direction of rotation
-            Vector3 rotatedMovement = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
-            rotatedMovement.y = -0.02f;
-            controller.Move(rotatedMovement * currentSpeed * Time.deltaTime);
+            // Rotate movement vector to camera direction
+            movement = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * movement;
+            controller.Move(movement * currentSpeed * Time.deltaTime);
         }
+        
+        // Rotate player with mouse
+        float camInputX = Input.GetAxisRaw("Mouse X") * 0.5f;
+        float targetAngle = currentAngle + camInputX * 360;
+        currentAngle = Mathf.SmoothDampAngle(currentAngle, targetAngle, ref currentAngleVelocity, rotationSmoothTime);
+        transform.rotation = Quaternion.Euler(0, currentAngle, 0);
     }
 
     void HandleGravityAndJump()

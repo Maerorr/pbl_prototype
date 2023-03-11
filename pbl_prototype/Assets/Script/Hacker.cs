@@ -13,6 +13,9 @@ public class Hacker : MonoBehaviour
     [SerializeField] float sensitivity = 1f;
     [SerializeField] private float moveCooldown = 2f;
 
+    [SerializeField]
+    private CameraScript startingCamera;
+
     private float lastMove = 0f;
     
     private CameraScript currentCamera;
@@ -22,7 +25,7 @@ public class Hacker : MonoBehaviour
 
     private void Start()
     {
-        MoveToNewCamera(GameObject.Find("Camera").GetComponent<CameraScript>());
+        MoveToNewCamera(startingCamera);
         lookAtCamera = currentCamera;
     }
 
@@ -37,7 +40,7 @@ public class Hacker : MonoBehaviour
     private void TryMovingToNewCamera()
     {
         if (!isLookingAtCamera) return;
-        if (!Input.GetKey(KeyCode.F)) return;
+        if (!Input.GetKey(KeyCode.Comma)) return;
         if (Time.time - lastMove < moveCooldown) return;
         
         MoveToNewCamera(lookAtCamera);
@@ -76,7 +79,7 @@ public class Hacker : MonoBehaviour
         }
         else if (hit.transform.gameObject.TryGetComponent(out IHackable hackableThing))
         {
-            if (Input.GetKey(KeyCode.E))
+            if (Input.GetKey(KeyCode.Comma))
             {
                 hackableThing.OnHack();
             }

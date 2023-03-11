@@ -29,17 +29,17 @@ public class SplitScreenController : MonoBehaviour
 
     private void SwitchSplitScreen() 
     {
-        if (Input.GetKey(","))
+        if (Input.GetKey(KeyCode.I))
         {
             playerCamera.rect = fullScreen;
             hackerCamera.rect = noScreen;
         }
-        else if (Input.GetKey((".")))
+        else if (Input.GetKey(KeyCode.O))
         {
             playerCamera.rect = splitLeft;
             hackerCamera.rect = splitRight;
         }
-        else if (Input.GetKey(("/")))
+        else if (Input.GetKey(KeyCode.P))
         {
             hackerCamera.rect = fullScreen;
             playerCamera.rect = noScreen;

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 
 public class Movement : MonoBehaviour
@@ -27,10 +28,15 @@ public class Movement : MonoBehaviour
     float currentAngleVelocity;
 
     [SerializeField]
+    private Transform cameraPivot;    
+    
+    [SerializeField]
     private Camera cam;
     public Transform capsule;
     public Transform eyes;
     private bool isCrouching = false;
+    
+    private IInteractable lastInteractable;
     
     private Vector3 defaultEyesPosition;
     private int crouchingCooldown = 0;
@@ -46,10 +52,41 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        Sprint();
+        HandleInteract();
+        HandleSprint();
         HandleMovement();
         HandleGravityAndJump();
         Crouch();
+    }
+
+    private void HandleInteract()
+    {
+        bool canInteract = false;
+        
+        RaycastHit hit;
+        if (Physics.Raycast(eyes.position, eyes.forward, out hit, 3f))
+        {
+            if (hit.collider.TryGetComponent(out IInteractable interactable))
+            {
+                canInteract = true;
+                lastInteractable = interactable;
+                interactable.OnHover();
+                
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    if (interactable.CanInteract())
+                    {
+                        interactable.Interact();
+                    }
+                } 
+            }
+        }
+        
+        if (!canInteract && lastInteractable != null)
+        {
+            lastInteractable.OnUnhover();
+            lastInteractable = null;
+        }
     }
 
     private void HandleMovement()
@@ -68,10 +105,14 @@ public class Movement : MonoBehaviour
         }
         
         // Rotate player with mouse
-        float camInputX = Input.GetAxisRaw("Mouse X") * 0.5f;
+        float camInputX = Input.GetAxisRaw("Mouse X") * 0.25f;
         float targetAngle = currentAngle + camInputX * 360;
         currentAngle = Mathf.SmoothDampAngle(currentAngle, targetAngle, ref currentAngleVelocity, rotationSmoothTime);
         transform.rotation = Quaternion.Euler(0, currentAngle, 0);
+        
+        
+        float camInputY = Input.GetAxisRaw("Mouse Y") * 2.5f;
+        cameraPivot.rotation = Quaternion.Euler(cameraPivot.rotation.eulerAngles.x - camInputY, cameraPivot.rotation.eulerAngles.y, cameraPivot.rotation.eulerAngles.z);
     }
 
     void HandleGravityAndJump()
@@ -123,7 +164,7 @@ public class Movement : MonoBehaviour
         }
     }
 
-    void Sprint()
+    void HandleSprint()
     {
         if (!isCrouching)
         {

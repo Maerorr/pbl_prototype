@@ -11,7 +11,7 @@ enum EnemyState
     Dead
 }
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IInteractable
 {
     public Transform[] patrolPoints;
     private int current;
@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     private bool isLookingAtTarget = false;
 
     [SerializeField] private GameObject player;
+    [SerializeField] private GameObject interactionIndicator;
     
     private EnemyState state;
     
@@ -29,6 +30,7 @@ public class Enemy : MonoBehaviour
     {
         state = EnemyState.Alive;
         current = 0;
+        interactionIndicator.SetActive(false);
     }
 
     // Update is called once per frame
@@ -125,4 +127,27 @@ public class Enemy : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, targetWithoutY, speed * Time.deltaTime);
     }
 
+    public void OnHover()
+    {
+        interactionIndicator.SetActive(true);
+    }
+
+    public void OnUnhover()
+    {
+        interactionIndicator.SetActive(false);
+    }
+
+    public bool CanInteract()
+    {
+        if (state == EnemyState.Alive)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void Interact()
+    {
+        OnDeath();
+    }
 }

@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplodingBox : MonoBehaviour, IHackable
+public class ExplodingBox : HackableObject
 {
-    private bool IsHacked = false;
     private bool HasExploded = false;
     
     [SerializeField] private float explosionRadius = 5f;
 
-    public void OnHack()
+    public override void OnHack()
     {
-        IsHacked = true;
+        HasExploded = true;
 
         var colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         
@@ -24,6 +23,11 @@ public class ExplodingBox : MonoBehaviour, IHackable
                 enemy.OnDeath();
             }
         }
+    }
+    
+    public override bool CanHack()
+    {
+        return !HasExploded;
     }
     
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Platform : MonoBehaviour, IHackable
+public class Platform : HackableObject
 {
     [SerializeField]
     private float Velocity = 1f;
@@ -21,6 +21,7 @@ public class Platform : MonoBehaviour, IHackable
 
     void Start()
     {
+        base.Start();
         StartPoint = ObjectToMove.transform.position;
         float distance = Vector3.Distance(StartPoint, EndPoint.transform.position);
         ElapsedTime = 0f;
@@ -54,10 +55,15 @@ public class Platform : MonoBehaviour, IHackable
         }
 
     }
-
-    public void OnHack()
+    
+    public override void OnHack()
     {
         IsHacking = true;
+    }
+    
+    public override bool CanHack()
+    {
+        return true;
     }
 
     private void OnTriggerEnter(Collider other)

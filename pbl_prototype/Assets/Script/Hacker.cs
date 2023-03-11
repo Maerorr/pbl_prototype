@@ -22,7 +22,7 @@ public class Hacker : MonoBehaviour
     private CameraScript lookAtCamera;
 
     private bool isLookingAtCamera = false;
-
+    
     private void Start()
     {
         MoveToNewCamera(startingCamera);
@@ -77,8 +77,13 @@ public class Hacker : MonoBehaviour
             lookAtCamera = foundCamera;
             lookAtCamera.SwitchHighlight(true);
         }
-        else if (hit.transform.gameObject.TryGetComponent(out IHackable hackableThing))
+        else if (hit.transform.gameObject.TryGetComponent(out HackableObject hackableThing))
         {
+            if (!hackableThing.CanHack())
+                return;
+            
+            hackableThing.OnHover();
+            
             if (Input.GetKey(KeyCode.Comma))
             {
                 hackableThing.OnHack();
@@ -86,6 +91,7 @@ public class Hacker : MonoBehaviour
         }
         else if (isLookingAtCamera)
         {
+            
             lookAtCamera.SwitchHighlight(false);
             isLookingAtCamera = false;
         }

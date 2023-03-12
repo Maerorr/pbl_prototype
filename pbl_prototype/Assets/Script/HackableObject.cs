@@ -5,6 +5,10 @@ public abstract class HackableObject : MonoBehaviour
 {
     protected UnityEngine.Color originalColor;
     protected Renderer renderer;
+    
+    [SerializeField]
+    bool canBeHackedDirectly = true;
+    
     protected void Start()
     {
         renderer = gameObject.GetComponent<Renderer>();
@@ -13,6 +17,8 @@ public abstract class HackableObject : MonoBehaviour
     
     public void OnHover()
     {
+        if (!canBeHackedDirectly) return;
+        
         renderer.material.color = Color.green;
         StopAllCoroutines();
         StartCoroutine(Unhover());

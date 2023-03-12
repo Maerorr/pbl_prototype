@@ -78,8 +78,8 @@ public class Enemy : MonoBehaviour, IInteractable
 
     void OnAlerted()
     {
-        Debug.Log("Spotted Player");
-        GameOver.RestartGame();
+        Player.AddDetection(Time.deltaTime);
+        Player.SetEnemyDetection(true);
     }
 
     IEnumerator CheckForPlayer()
@@ -101,9 +101,14 @@ public class Enemy : MonoBehaviour, IInteractable
                 }
                 else
                 {
+                    Player.SetEnemyDetection(false);
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.red);
                 }
             }
+        }
+        else
+        {
+            Player.SetEnemyDetection(false);
         }
         yield return new WaitForSeconds(.1f);
     }

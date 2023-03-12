@@ -91,23 +91,41 @@ public class CameraScript : MonoBehaviour
     public void ShootRaycastAtPlayer()
     {
         if (isHacked) return;
-        GameObject player = GameObject.Find("Player");
-        Vector3 playerPosition = player.transform.position;
-        Vector3 vectorToPlayer = playerPosition - transform.position;
-        //check if enemy can see player
-        var ray = new Ray(transform.position, vectorToPlayer);
+
+        StartCoroutine(LookingForPlayer());
+    }
+    
+    public void StopLookingForPlayer()
+    {
+        StopAllCoroutines();
+        Player.SetCameraDetection(false);
+    }
+
+    IEnumerator LookingForPlayer()
+    {
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        while (true)
         {
-            if (hit.transform.gameObject == player)
+            GameObject player = GameObject.Find("Player");
+            Vector3 playerPosition = player.transform.position;
+            Vector3 vectorToPlayer = playerPosition - transform.position;
+            //check if enemy can see player
+            var ray = new Ray(transform.position, vectorToPlayer.normalized);
+            if (Physics.Raycast(ray, out hit))
             {
-                Debug.DrawRay(transform.position, vectorToPlayer, Color.green);
-                GameOver.RestartGame();
+                if (hit.transform.gameObject == player)
+                {
+                    Debug.DrawRay(transform.position, vectorToPlayer, Color.green);
+                    Player.AddDetection(Time.deltaTime);
+                    Player.SetCameraDetection(true);
+                }
+                else
+                {
+                    Debug.DrawRay(transform.position, vectorToPlayer, Color.red);
+                    Player.SetCameraDetection(false);
+                }
             }
-            else
-            {
-                Debug.DrawRay(transform.position, vectorToPlayer, Color.red);
-            }
+            yield return new WaitForSeconds(0.01f);
         }
     }
 }

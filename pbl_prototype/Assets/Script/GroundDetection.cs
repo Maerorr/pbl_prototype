@@ -19,4 +19,12 @@ public class GroundDetection : MonoBehaviour
             cameraScript.ShootRaycastAtPlayer();
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            cameraScript.StopLookingForPlayer();
+        }
+    }
 }

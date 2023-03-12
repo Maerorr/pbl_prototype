@@ -110,8 +110,7 @@ public class Hacker : MonoBehaviour
                 if (hackableThing.needsMinigame)
                 {
                     isPlayingMinigame = true;
-                    minigame.gameObject.SetActive(true);
-                    minigame.InitializeGame();    
+                    StartCoroutine(StartMinigame());
                 }
                 else
                 {
@@ -126,8 +125,17 @@ public class Hacker : MonoBehaviour
         }
     }
 
-    public void FinishMinigame()
+    public IEnumerator StartMinigame()
     {
+        yield return new WaitForSeconds(0.1f);
+
+        minigame.gameObject.SetActive(true);
+        minigame.InitializeGame();  
+    }
+
+    public IEnumerator FinishMinigame()
+    {
+        yield return new WaitForSeconds(0.1f);
         isPlayingMinigame = false;
         minigame.gameObject.SetActive(false);
         hackableObject.OnHack();

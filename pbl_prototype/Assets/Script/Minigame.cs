@@ -39,7 +39,7 @@ public class Minigame : MonoBehaviour
             }
         }
 
-        hacker.FinishMinigame();
+        StartCoroutine(hacker.FinishMinigame());
     }
     
     void UpdateCubeColors()
@@ -82,7 +82,7 @@ public class Minigame : MonoBehaviour
             arrow.transform.localRotation.eulerAngles.z
             );
 
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetKeyDown(KeyCode.Comma))
         {
             var currentIndex = (int)Mathf.Floor(progress * 6);
             isSetCorrectly[currentIndex] = !isSetCorrectly[currentIndex];

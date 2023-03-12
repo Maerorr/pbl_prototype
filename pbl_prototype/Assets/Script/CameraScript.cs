@@ -34,6 +34,7 @@ public class CameraScript : MonoBehaviour
 
     [SerializeField]
     Material currentlyHackedMaterial;
+    [SerializeField]
     Material originalMaterial;
 
     private void Start()
@@ -42,7 +43,6 @@ public class CameraScript : MonoBehaviour
         lens = body.transform.Find("Lens").gameObject;
         startPitch = cameraBody.eulerAngles.x;
         startYaw = cameraBody.eulerAngles.y;
-        originalMaterial = triangleMesh.GetComponent<Renderer>().sharedMaterial;
     }
 
     void Update()
@@ -125,7 +125,7 @@ public class CameraScript : MonoBehaviour
                     Player.SetCameraDetection(false);
                 }
             }
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(Time.deltaTime);
         }
     }
 }

@@ -4724,7 +4724,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-32384
+  m_Name: pb_Mesh126148
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -22076,6 +22076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canBeHackedDirectly: 1
+  needsMinigame: 0
   explosionRadius: 5
   explosionParticles: {fileID: 1353341507}
 --- !u!1001 &1852642543
@@ -23496,11 +23497,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1948445187}
     m_Modifications:
+    - target: {fileID: 1805159226751098919, guid: d60a767dcb13544348e1919c9753cde6,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3091006601908822501, guid: d60a767dcb13544348e1919c9753cde6,
         type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 277052272}
+    - target: {fileID: 3091006601908822501, guid: d60a767dcb13544348e1919c9753cde6,
+        type: 3}
+      propertyPath: needsMinigame
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8566659499116685179, guid: d60a767dcb13544348e1919c9753cde6,
         type: 3}
       propertyPath: m_RootOrder

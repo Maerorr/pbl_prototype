@@ -8,6 +8,9 @@ public abstract class HackableObject : MonoBehaviour
     
     [SerializeField]
     bool canBeHackedDirectly = true;
+
+    [SerializeField]
+    public bool needsMinigame = false;
     
     protected void Start()
     {

@@ -25,19 +25,30 @@ public class Hacker : MonoBehaviour
     private CameraScript lookAtCamera;
 
     private bool isLookingAtCamera = false;
+
+    [SerializeField]
+    Minigame minigame;
+
+    bool isPlayingMinigame = false;
+
+    // Hackable Object that we're currently looking at
+    HackableObject hackableObject = null;
     
     private void Start()
     {
         MoveToNewCamera(startingCamera);
         lookAtCamera = currentCamera;
+        minigame.gameObject.SetActive(false);
     }
 
     void FixedUpdate()
     {
-        RotateCamera();
-        ShootRaycast();
-        
-        TryMovingToNewCamera();
+        if (!isPlayingMinigame)
+        {
+            RotateCamera();
+            ShootRaycast();
+            TryMovingToNewCamera();
+        }
     }
 
     private void TryMovingToNewCamera()
@@ -76,6 +87,8 @@ public class Hacker : MonoBehaviour
         
         Debug.DrawRay(shootPosition, currentTransform.forward * 100, Color.red);
 
+        hackableObject = null;
+
         if (!Physics.Raycast(currentTransform.position, currentTransform.forward, out var hit)) return;
         if (hit.transform.gameObject.TryGetComponent(out CameraScript foundCamera))
         {
@@ -89,17 +102,34 @@ public class Hacker : MonoBehaviour
                 return;
             
             hackableThing.OnHover();
+
+            hackableObject = hackableThing;
             
             if (Input.GetKey(KeyCode.Comma))
             {
-                hackableThing.OnHack();
+                if (hackableThing.needsMinigame)
+                {
+                    isPlayingMinigame = true;
+                    minigame.gameObject.SetActive(true);
+                    minigame.InitializeGame();    
+                }
+                else
+                {
+                    hackableObject.OnHack();
+                }
             }
         }
         else if (isLookingAtCamera)
         {
-            
             lookAtCamera.SwitchHighlight(false);
             isLookingAtCamera = false;
         }
+    }
+
+    public void FinishMinigame()
+    {
+        isPlayingMinigame = false;
+        minigame.gameObject.SetActive(false);
+        hackableObject.OnHack();
     }
 }

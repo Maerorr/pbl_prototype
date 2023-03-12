@@ -14,6 +14,8 @@ public class CameraScript : MonoBehaviour
 
     private GameObject body;
     private GameObject lens;
+    
+    private bool isHacked = false;
 
     [SerializeField]
     float detectionRange = 5f;
@@ -34,7 +36,7 @@ public class CameraScript : MonoBehaviour
     Material currentlyHackedMaterial;
     Material originalMaterial;
 
-private void Start()
+    private void Start()
     {
         body = transform.Find("Body").gameObject;
         lens = body.transform.Find("Lens").gameObject;
@@ -55,6 +57,7 @@ private void Start()
     public void SetHacked(bool hacked)
     {
         triangleMesh.GetComponent<Renderer>().material = hacked ? currentlyHackedMaterial : originalMaterial;
+        isHacked = hacked;
     }
 
     public Transform GetCameraTransform()
@@ -83,5 +86,28 @@ private void Start()
         
         Renderer lensRenderer = lens.GetComponent<Renderer>();
         lensRenderer.material.color = highlight ? Color.green : Color.white;
+    }
+
+    public void ShootRaycastAtPlayer()
+    {
+        if (isHacked) return;
+        GameObject player = GameObject.Find("Player");
+        Vector3 playerPosition = player.transform.position;
+        Vector3 vectorToPlayer = playerPosition - transform.position;
+        //check if enemy can see player
+        var ray = new Ray(transform.position, vectorToPlayer);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit))
+        {
+            if (hit.transform.gameObject == player)
+            {
+                Debug.DrawRay(transform.position, vectorToPlayer, Color.green);
+                GameOver.RestartGame();
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, vectorToPlayer, Color.red);
+            }
+        }
     }
 }

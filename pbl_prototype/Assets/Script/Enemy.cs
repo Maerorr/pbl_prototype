@@ -79,7 +79,7 @@ public class Enemy : MonoBehaviour, IInteractable
     void OnAlerted()
     {
         Debug.Log("Spotted Player");
-        //OnDeath();
+        GameOver.RestartGame();
     }
 
     IEnumerator CheckForPlayer()

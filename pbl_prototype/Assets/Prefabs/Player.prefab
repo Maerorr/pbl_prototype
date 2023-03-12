@@ -161,6 +161,7 @@ GameObject:
   - component: {fileID: 4585548050828845079}
   - component: {fileID: 4585548050828845077}
   - component: {fileID: 4585548050828845076}
+  - component: {fileID: 7241459053405310927}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -223,11 +224,25 @@ MonoBehaviour:
   gravity: 9.8
   gravityMultiplier: 2
   groundedGravity: 2
-  jumpHeight: 3
+  jumpPower: 3
   cameraPivot: {fileID: 4385936077126661809}
   cam: {fileID: 8113476526034802300}
   capsule: {fileID: 4585548052135255395}
   eyes: {fileID: 4585548051953263886}
+--- !u!136 &7241459053405310927
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4585548050828845078}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2.1487117
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.06454921, z: 0}
 --- !u!1 &4585548051953263985
 GameObject:
   m_ObjectHideFlags: 0

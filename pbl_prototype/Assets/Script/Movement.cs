@@ -19,7 +19,7 @@ public class Movement : MonoBehaviour
     [SerializeField] float gravity = 9.8f;
     [SerializeField] float gravityMultiplier = 2;
     [SerializeField] float groundedGravity = -0.5f;
-    [SerializeField] float jumpHeight = 3f;
+    [SerializeField] float jumpPower = 3f;
     float velocityY;
 
     CharacterController controller;
@@ -40,6 +40,8 @@ public class Movement : MonoBehaviour
     
     private Vector3 defaultEyesPosition;
     private int crouchingCooldown = 0;
+
+    private Vector3 wholeMovement;
 
     private void Awake()
     {
@@ -101,9 +103,11 @@ public class Movement : MonoBehaviour
         {
             // Rotate movement vector to camera direction
             movement = Quaternion.Euler(0, cam.transform.eulerAngles.y, 0) * movement;
-            controller.Move(movement * currentSpeed * Time.deltaTime);
+            //controller.Move(movement * currentSpeed * Time.deltaTime);
         }
         
+        wholeMovement = new Vector3(movement.x, 0.0f, movement.z);
+
         // Rotate player with mouse
         float camInputX = Input.GetAxisRaw("Mouse X") * 0.25f;
         float targetAngle = currentAngle + camInputX * 360;
@@ -117,23 +121,42 @@ public class Movement : MonoBehaviour
 
     void HandleGravityAndJump()
     {
-
-        //apply groundedGravity when the Player is Grounded
-        if (controller.isGrounded && velocityY < 0f)
-            velocityY = -groundedGravity;
-
-        //When Grounded and Jump Button is Pressed, set veloctiyY with the formula below
-        if (controller.isGrounded && Input.GetKeyDown(KeyCode.Space))
+        if (controller.isGrounded && velocityY < 0.0f)
         {
-            velocityY = Mathf.Sqrt(jumpHeight * 2f * gravity);
+            velocityY = -1.0f;
         }
-
-        //applying gravity when Player is not grounded
-        if (!controller.isGrounded)
+        else
         {
             velocityY -= gravity * gravityMultiplier * Time.deltaTime;
         }
-        controller.Move(Vector3.up * velocityY * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
+        {
+            velocityY = jumpPower;
+        }
+
+        controller.Move(Vector3.up * velocityY * Time.deltaTime + wholeMovement * currentSpeed * Time.deltaTime);
+
+        // //apply groundedGravity when the Player is Grounded
+        // if (controller.isGrounded && velocityY < 0f)
+        //     velocityY = -groundedGravity;
+        //
+        // //When Grounded and Jump Button is Pressed, set veloctiyY with the formula below
+        // if (Input.GetKeyDown(KeyCode.Space))
+        // {
+        //     Debug.Log(controller.isGrounded + " " + controller.velocity.y.ToString());
+        //     if (controller.isGrounded)
+        //     {
+        //         velocityY = Mathf.Sqrt(jumpHeight * 2f * gravity);
+        //     }
+        // }
+        //
+        // //applying gravity when Player is not grounded
+        // if (!controller.isGrounded)
+        // {
+        //     velocityY -= gravity * gravityMultiplier * Time.deltaTime;
+        // }
+        // controller.Move(Vector3.up * velocityY * Time.deltaTime);
     }
 
     void Crouch()

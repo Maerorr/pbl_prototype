@@ -156,3 +156,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sensitivity: 2
   moveCooldown: 2
+  currentActualCamera: {fileID: 4008563552662516156}
+  startingCamera: {fileID: 0}

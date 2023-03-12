@@ -14,6 +14,9 @@ public class Hacker : MonoBehaviour
     [SerializeField] private float moveCooldown = 2f;
 
     [SerializeField]
+    private Camera currentActualCamera;
+    
+    [SerializeField]
     private CameraScript startingCamera;
 
     private float lastMove = 0f;
@@ -48,11 +51,14 @@ public class Hacker : MonoBehaviour
 
     private void MoveToNewCamera(CameraScript newCamera)
     {
+        currentCamera?.SetHacked(false);
         currentCamera?.SwitchHighlight(false);
         currentCamera = newCamera;
+        currentActualCamera.fieldOfView = newCamera.cameraFov;
         Transform cameraTransform = currentCamera.GetCameraTransform();
         transform.position = cameraTransform.position;
         transform.eulerAngles = cameraTransform.eulerAngles;
+        currentCamera?.SetHacked(true);
 
         lastMove = Time.time;
     }

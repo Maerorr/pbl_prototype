@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class CameraScript : MonoBehaviour
 {
     private float pitch = 0.0f;
@@ -14,22 +15,55 @@ public class CameraScript : MonoBehaviour
     private GameObject body;
     private GameObject lens;
 
-    private void Start()
+    [SerializeField]
+    float detectionRange = 5f;
+
+    [SerializeField]
+    public float cameraFov = 30f;
+
+    [SerializeField]
+    Transform cameraBody;
+
+    [SerializeField]
+    Transform detectionTriangle;
+
+    [SerializeField]
+    GameObject triangleMesh;
+
+    [SerializeField]
+    Material currentlyHackedMaterial;
+    Material originalMaterial;
+
+private void Start()
     {
         body = transform.Find("Body").gameObject;
         lens = body.transform.Find("Lens").gameObject;
-        startPitch = transform.eulerAngles.x;
-        startYaw = transform.eulerAngles.y;
+        startPitch = cameraBody.eulerAngles.x;
+        startYaw = cameraBody.eulerAngles.y;
+        originalMaterial = triangleMesh.GetComponent<Renderer>().sharedMaterial;
+    }
+
+    void Update()
+    {
+        // Rotate detection triangle
+        detectionTriangle.eulerAngles = new Vector3(0, cameraBody.eulerAngles.y, cameraBody.eulerAngles.z);
+        
+        var scaleX = 2.0f * detectionRange * Mathf.Tan(cameraFov * Mathf.Deg2Rad / 2.0f);
+        detectionTriangle.transform.localScale = new Vector3(scaleX, 1, detectionRange);
+    }
+    
+    public void SetHacked(bool hacked)
+    {
+        triangleMesh.GetComponent<Renderer>().material = hacked ? currentlyHackedMaterial : originalMaterial;
     }
 
     public Transform GetCameraTransform()
     {
-        return transform;
+        return cameraBody.transform;
     }
     
     public void RotateCamera(float sensitivity)
     {
-        
         float inputX = Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
         float inputY = Input.GetKey(KeyCode.DownArrow) ? -1 : Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
 
@@ -39,7 +73,7 @@ public class CameraScript : MonoBehaviour
         yaw = Mathf.Clamp(yaw, startYaw - 45f, startYaw + 45f);
         pitch = Mathf.Clamp(pitch, startPitch - 45f, startPitch + 45f);
  
-        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        cameraBody.eulerAngles = new Vector3(pitch, yaw, 0.0f);
     }
 
     public void SwitchHighlight(bool highlight)

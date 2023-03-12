@@ -36,6 +36,7 @@ public class Enemy : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
+        if (patrolPoints.Length == 0) return;
 
         if (state == EnemyState.Alive)
         {
@@ -45,8 +46,11 @@ public class Enemy : MonoBehaviour, IInteractable
             Debug.DrawRay(transform.position,
                 Quaternion.AngleAxis(-visionAngle, Vector3.up) * transform.forward * visionRange, Color.white);
             
+            var currentPos = new Vector3(transform.position.x, 0, transform.position.z);
+            var nextPatrolPoint = new Vector3(patrolPoints[current].position.x, 0, patrolPoints[current].position.z);
+            
             //patrol between given points
-            if (transform.position != patrolPoints[current].position)
+            if (Vector3.Distance(currentPos, nextPatrolPoint) > 0.1f)
             {
                 if (!isLookingAtTarget)
                 {
@@ -106,8 +110,8 @@ public class Enemy : MonoBehaviour, IInteractable
 
     void LookAtCurrentPoint()
     {
-        var currentPosition = transform.position;
-        var enemyPosition = patrolPoints[current].position;
+        var currentPosition = new Vector3(transform.position.x, 0, transform.position.z);
+        var enemyPosition = new Vector3(patrolPoints[current].position.x, 0, patrolPoints[current].position.z);
 
         // lerp the rotation
         var targetWithoutY = new Vector3(enemyPosition.x, currentPosition.y, enemyPosition.z);

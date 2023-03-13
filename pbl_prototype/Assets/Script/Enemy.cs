@@ -1,13 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
-
 
 enum EnemyState
 {
-    Alive,
+    Patrolling,
+    Distracted,
     Dead
 }
 
@@ -19,6 +16,8 @@ public class Enemy : MonoBehaviour, IInteractable
     public float visionRange = 10;
     public float visionAngle = 30;
     private bool isLookingAtTarget = false;
+    private Vector3 distraction;
+    public bool continuePatrollingAfterDistraction = true;
 
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject interactionIndicator;
@@ -28,7 +27,7 @@ public class Enemy : MonoBehaviour, IInteractable
     // Start is called before the first frame update
     void Start()
     {
-        state = EnemyState.Alive;
+        state = EnemyState.Patrolling;
         current = 0;
         interactionIndicator.SetActive(false);
     }
@@ -38,7 +37,7 @@ public class Enemy : MonoBehaviour, IInteractable
     {
         if (patrolPoints.Length == 0) return;
 
-        if (state == EnemyState.Alive)
+        if (state == EnemyState.Patrolling)
         {
             StartCoroutine(CheckForPlayer());
             Debug.DrawRay(transform.position,
@@ -54,11 +53,11 @@ public class Enemy : MonoBehaviour, IInteractable
             {
                 if (!isLookingAtTarget)
                 {
-                    LookAtCurrentPoint();
+                    LookAtPoint(patrolPoints[current].position);
                 }
                 else
                 {
-                    MoveTowardsCurrentPoint();
+                    MoveTowardsPoint(patrolPoints[current].position);
                 }
             }
             else
@@ -67,13 +66,44 @@ public class Enemy : MonoBehaviour, IInteractable
                 isLookingAtTarget = false;
             }
         }
-
+        else if (state == EnemyState.Distracted)
+        {
+            if (!isLookingAtTarget)
+            {
+                LookAtPoint(distraction);
+            }
+            else if (Vector3.Distance(this.transform.position, distraction) > 2.0f)
+            {
+                MoveTowardsPoint(distraction);
+            }
+            else if (continuePatrollingAfterDistraction)
+            {
+                StartCoroutine(ReturnToPatrolling());
+            }
+        }
     }
 
     public void OnDeath()
     {
         state = EnemyState.Dead;
         gameObject.SetActive(false);
+    }
+
+    public void OnDistracted(GameObject newDistraction)
+    {
+        Vector3 vectorToDistraction = newDistraction.transform.position - transform.position;
+        var ray = new Ray(transform.position, vectorToDistraction);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, visionRange))
+        {
+            Debug.Log(hit.transform.gameObject);
+            if (hit.transform.gameObject == newDistraction)
+            {
+                state = EnemyState.Distracted;
+                isLookingAtTarget = false;
+                this.distraction = newDistraction.transform.position;
+            }
+        }
     }
 
     void OnAlerted()
@@ -113,10 +143,17 @@ public class Enemy : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(.1f);
     }
 
-    void LookAtCurrentPoint()
+    IEnumerator ReturnToPatrolling()
+    {
+        yield return new WaitForSeconds(2.0f);
+        state = EnemyState.Patrolling;
+        isLookingAtTarget = false;
+    }
+
+    void LookAtPoint(Vector3 point)
     {
         var currentPosition = new Vector3(transform.position.x, 0, transform.position.z);
-        var enemyPosition = new Vector3(patrolPoints[current].position.x, 0, patrolPoints[current].position.z);
+        var enemyPosition = new Vector3(point.x, 0, point.z);
 
         // lerp the rotation
         var targetWithoutY = new Vector3(enemyPosition.x, currentPosition.y, enemyPosition.z);
@@ -129,10 +166,10 @@ public class Enemy : MonoBehaviour, IInteractable
         }
     }
     
-    void MoveTowardsCurrentPoint()
+    void MoveTowardsPoint(Vector3 point)
     {
         // Move towards target
-        var targetWithoutY = new Vector3(patrolPoints[current].position.x, transform.position.y, patrolPoints[current].position.z);
+        var targetWithoutY = new Vector3(point.x, transform.position.y, point.z);
         transform.position = Vector3.MoveTowards(transform.position, targetWithoutY, speed * Time.deltaTime);
     }
 
@@ -148,7 +185,7 @@ public class Enemy : MonoBehaviour, IInteractable
 
     public bool CanInteract()
     {
-        if (state == EnemyState.Alive)
+        if (state == EnemyState.Patrolling)
         {
             return true;
         }

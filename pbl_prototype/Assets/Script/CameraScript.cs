@@ -47,6 +47,8 @@ public class CameraScript : MonoBehaviour
         lens = body.transform.Find("Lens").gameObject;
         startPitch = cameraBody.eulerAngles.x;
         startYaw = cameraBody.eulerAngles.y;
+        pitch = startPitch;
+        yaw = startYaw;
     }
 
     void Update()

@@ -7,6 +7,7 @@ public class ExplodingBox : HackableObject
     private bool HasExploded = false;
     
     [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float distactionRadius = 10f;
     [SerializeField] private ParticleSystem explosionParticles;
 
     public override void OnHack()
@@ -14,6 +15,7 @@ public class ExplodingBox : HackableObject
         HasExploded = true;
 
         var colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+        
         
         explosionParticles.Play();
         
@@ -26,6 +28,18 @@ public class ExplodingBox : HackableObject
                 enemy.OnDeath();
             }
         }
+        
+        var collidersDistraction = Physics.OverlapSphere(transform.position, distactionRadius);
+        for (int i = 0; i < collidersDistraction.Length; i++)
+        {
+            var currentCollider = collidersDistraction[i];
+            
+            if (currentCollider.TryGetComponent(out Enemy enemy))
+            {
+                enemy.OnDistracted(this.gameObject);
+            }
+        }
+        
     }
     
     public override bool CanHack()

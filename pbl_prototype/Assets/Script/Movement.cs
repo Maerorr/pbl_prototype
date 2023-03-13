@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Timeline;
 
@@ -21,7 +22,7 @@ public class Movement : MonoBehaviour
     [SerializeField] float groundedGravity = -0.5f;
     [SerializeField] float jumpPower = 3f;
     float velocityY;
-
+    
     CharacterController controller;
 
     float currentAngle;

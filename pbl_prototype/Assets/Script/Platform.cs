@@ -65,14 +65,4 @@ public class Platform : HackableObject
     {
         return true;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        other.transform.SetParent(ObjectToMove.transform);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        other.transform.SetParent(null);
-    }
 }

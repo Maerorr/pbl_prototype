@@ -127,7 +127,7 @@ public class Hacker : MonoBehaviour
 
     public IEnumerator StartMinigame()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
 
         minigame.gameObject.SetActive(true);
         minigame.InitializeGame();  
@@ -135,7 +135,7 @@ public class Hacker : MonoBehaviour
 
     public IEnumerator FinishMinigame()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.3f);
         isPlayingMinigame = false;
         minigame.gameObject.SetActive(false);
         hackableObject.OnHack();

@@ -25,6 +25,9 @@ public class CameraScript : MonoBehaviour
     public float cameraFov = 30f;
 
     [SerializeField]
+    float maxSideRotation = 45f;
+
+    [SerializeField]
     Transform cameraBody;
 
     [SerializeField]
@@ -77,7 +80,7 @@ public class CameraScript : MonoBehaviour
         yaw += sensitivity * inputX;
         pitch -= sensitivity * inputY;
 
-        yaw = Mathf.Clamp(yaw, startYaw - 45f, startYaw + 45f);
+        yaw = Mathf.Clamp(yaw, startYaw - maxSideRotation, startYaw + maxSideRotation);
         pitch = Mathf.Clamp(pitch, startPitch - 45f, startPitch + 45f);
  
         cameraBody.eulerAngles = new Vector3(pitch, yaw, 0.0f);

@@ -13,6 +13,7 @@ public class Hacker : MonoBehaviour
 {
     [SerializeField] float sensitivity = 1f;
     [SerializeField] private float moveCooldown = 2f;
+    [SerializeField] private float moveSpeed = 1f;
 
     [SerializeField]
     private Camera currentActualCamera;
@@ -70,12 +71,22 @@ public class Hacker : MonoBehaviour
         currentCamera?.SwitchHighlight(false);
         currentCamera = newCamera;
         currentActualCamera.fieldOfView = newCamera.cameraFov;
-        Transform cameraTransform = currentCamera.GetCameraTransform();
-        transform.position = cameraTransform.position;
-        transform.eulerAngles = cameraTransform.eulerAngles;
+        StartCoroutine(MoveTowardsNewCamera());
         currentCamera?.SetHacked(true);
 
         lastMove = Time.time;
+    }
+
+    private IEnumerator MoveTowardsNewCamera()
+    {
+        var cameraTransform = currentCamera.GetCameraTransform();
+        
+        while (Vector3.Distance(transform.position, cameraTransform.position) > 0.1f)
+        {
+            transform.position = Vector3.Lerp(transform.position, cameraTransform.position, Time.deltaTime * moveSpeed);
+            transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, cameraTransform.eulerAngles, Time.deltaTime * moveSpeed);
+            yield return null;
+        }
     }
 
     private void RotateCamera()

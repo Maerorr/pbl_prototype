@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -26991,6 +26991,7 @@ MonoBehaviour:
   canBeHackedDirectly: 1
   needsMinigame: 0
   explosionRadius: 5
+  distactionRadius: 10
   explosionParticles: {fileID: 1353341507}
 --- !u!1001 &1852642543
 PrefabInstance:
@@ -31265,6 +31266,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hacker
+      objectReference: {fileID: 0}
+    - target: {fileID: 4008563552774839323, guid: d9ab1c63069b1e5498caaf83aeb989c3,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4008563552774839323, guid: d9ab1c63069b1e5498caaf83aeb989c3,
         type: 3}

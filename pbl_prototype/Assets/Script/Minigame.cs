@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder;
 
 public class Minigame : MonoBehaviour
@@ -82,7 +83,8 @@ public class Minigame : MonoBehaviour
             arrow.transform.localRotation.eulerAngles.z
             );
 
-        if (Input.GetKeyDown(KeyCode.Comma))
+        var xPressed = Gamepad.current?.buttonWest.wasPressedThisFrame ?? false;
+        if (Input.GetKeyDown(KeyCode.Comma) || xPressed)
         {
             var currentIndex = (int)Mathf.Floor(progress * 6);
             isSetCorrectly[currentIndex] = !isSetCorrectly[currentIndex];

@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.ProBuilder;
 using Transform = UnityEngine.Transform;
 
@@ -30,7 +31,7 @@ public class Hacker : MonoBehaviour
     Minigame minigame;
 
     bool isPlayingMinigame = false;
-
+    
     // Hackable Object that we're currently looking at
     HackableObject hackableObject = null;
     
@@ -54,7 +55,10 @@ public class Hacker : MonoBehaviour
     private void TryMovingToNewCamera()
     {
         if (!isLookingAtCamera) return;
-        if (!Input.GetKey(KeyCode.Comma)) return;
+        
+        var xPressed = Gamepad.current?.buttonWest.isPressed ?? false;
+
+        if (!(Input.GetKey(KeyCode.Comma) || xPressed)) return;
         if (Time.time - lastMove < moveCooldown) return;
         
         MoveToNewCamera(lookAtCamera);
@@ -105,7 +109,9 @@ public class Hacker : MonoBehaviour
 
             hackableObject = hackableThing;
             
-            if (Input.GetKey(KeyCode.Comma))
+            // Check if gamepad X button is pressed
+            var xPressed = Gamepad.current?.buttonWest.isPressed ?? false;
+            if (Input.GetKey(KeyCode.Comma) || xPressed)
             {
                 if (hackableThing.needsMinigame)
                 {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [ExecuteInEditMode]
 public class CameraScript : MonoBehaviour
@@ -69,6 +70,9 @@ public class CameraScript : MonoBehaviour
     {
         float inputX = Input.GetKey(KeyCode.LeftArrow) ? -1 : Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
         float inputY = Input.GetKey(KeyCode.DownArrow) ? -1 : Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
+        
+        inputX = Gamepad.current?.rightStick.x.ReadValue() ?? inputX;
+        inputY = Gamepad.current?.rightStick.y.ReadValue() ?? inputY;
 
         yaw += sensitivity * inputX;
         pitch -= sensitivity * inputY;

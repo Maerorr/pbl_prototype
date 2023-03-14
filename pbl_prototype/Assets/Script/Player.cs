@@ -1,17 +1,26 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     private static Player instance;
+    private float distanceToCamera = 0.0f;
     
     private float detectionLevel = 0.0f;
 
     private bool cameraDetection = false;
     private bool enemyDetection = false;
+    
+    List<GameObject> cameraPositions = new List<GameObject>();
+
+    private GameObject startingCameraPosition;
+
+    private GameObject playerCamera;
+    [SerializeField] private LayerMask cameraDetectionLayer;
     
     [SerializeField] private Slider detectionSlider;
 
@@ -26,6 +35,14 @@ public class Player : MonoBehaviour
     {
         instance = this;
         Player.detectionSpeed = detectionSpeedMultiplier;
+        playerCamera = GameObject.Find("PlayerCamera");
+        startingCameraPosition = playerCamera;
+        distanceToCamera = Vector3.Distance(transform.position, playerCamera.transform.position);
+        
+        cameraPositions.Add(GameObject.Find("PlayerCameraPosition1"));
+        cameraPositions.Add(GameObject.Find("PlayerCameraPosition2"));
+        cameraPositions.Add(GameObject.Find("PlayerCameraPosition3"));
+        cameraPositions.Add(GameObject.Find("PlayerCameraPosition4"));
     }
 
     private void FixedUpdate()
@@ -39,6 +56,37 @@ public class Player : MonoBehaviour
         if (detectionLevel >= maxDetectionLevel)
         {
             GameOver.RestartGame();
+        }
+        
+        CheckCameraPosition();
+    }
+    
+    // Check if there is no wall between the player and the camera, if there is, move camera closer to player
+    private void CheckCameraPosition()
+    {
+        for (int i = 0; i < cameraPositions.Count; i++)
+        {
+            Vector3 cameraPosition = cameraPositions[i].transform.position;
+            Vector3 direction = cameraPosition - transform.position;
+            
+            var hits = Physics.RaycastAll(transform.position, direction, direction.magnitude);
+            Debug.DrawRay(transform.position, direction, Color.yellow);
+            
+            bool goodPosition = true;
+            
+            for (int j = 0; j < hits.Length; j++)
+            {
+                RaycastHit hit = hits[j];
+                if (hit.collider.gameObject.CompareTag("Player") || hit.collider.gameObject.CompareTag("PlayerCamera")) continue;
+                
+                goodPosition = false;
+                break;
+            }
+
+            if (!goodPosition) continue;
+            
+            playerCamera.transform.position = cameraPosition;
+            break;
         }
     }
 

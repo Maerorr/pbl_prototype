@@ -203,6 +203,8 @@ public class Movement : MonoBehaviour
                 isSprinting = false;
             }
         }
+        
+        Player.SetIsSprinting(isSprinting);
     }
 
     private void FixedUpdate()

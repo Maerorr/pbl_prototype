@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 
     private bool cameraDetection = false;
     private bool enemyDetection = false;
+
+    private bool isSprinting = false;
     
     List<GameObject> cameraPositions = new List<GameObject>();
 
@@ -88,6 +90,11 @@ public class Player : MonoBehaviour
             playerCamera.transform.position = cameraPosition;
             break;
         }
+    }
+
+    public static void SetIsSprinting(bool newIsSprinting)
+    {
+        instance.isSprinting = newIsSprinting;
     }
 
     public static void AddDetection(float amount)

@@ -112,16 +112,22 @@ public class Enemy : MonoBehaviour, IInteractable
     IEnumerator CheckForPlayer()
     {
         seenPlayer = false;
+        
         Vector3 playerPosition = player.transform.position;
         Vector3 vectorToPlayer = playerPosition - transform.position;
+        float differenceInHeight = transform.position.y - playerPosition.y;
+        playerPosition.y = transform.position.y;
+        Vector3 vectorToPlayerNoY = playerPosition - transform.position;
+        
         //check if enemy can see player
         if (Vector3.Distance(transform.position, playerPosition) <= visionRange &&
-            Vector3.Angle(transform.forward, vectorToPlayer) <= visionAngle)
+            Vector3.Angle(transform.forward, vectorToPlayerNoY) <= visionAngle)
         {
             var ray = new Ray(transform.position, vectorToPlayer);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, visionRange))
+            if (Physics.Raycast(ray, out hit, visionRange + differenceInHeight * 5f))
             {
+                Debug.Log(hit.transform.gameObject);
                 if (hit.transform.gameObject == player)
                 {
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.green);

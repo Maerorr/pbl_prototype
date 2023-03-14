@@ -28,6 +28,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float maxDetectionLevel = 1.0f;
 
+    [SerializeField] private float sprintDetectionMultiplier = 1.5f;
+
     private static float detectionSpeed = 1.0f;
 
     [SerializeField] private float detectionSpeedMultiplier = 1.0f;
@@ -99,7 +101,8 @@ public class Player : MonoBehaviour
 
     public static void AddDetection(float amount)
     {
-        instance.detectionLevel += amount * detectionSpeed;
+        var actualValue = instance.isSprinting ? amount * instance.sprintDetectionMultiplier : amount;
+        instance.detectionLevel += actualValue * detectionSpeed;
     }
     
     public static void SetCameraDetection(bool value)

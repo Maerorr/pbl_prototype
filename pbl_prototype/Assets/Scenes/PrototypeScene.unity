@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7160,7 +7160,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh112568
+  m_Name: pb_Mesh30854
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -15240,6 +15240,26 @@ PrefabInstance:
     - target: {fileID: 529284504, guid: a05641553e7b191448d8af0b4c0c9ca8, type: 3}
       propertyPath: m_IsKinematic
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585548050828845076, guid: a05641553e7b191448d8af0b4c0c9ca8,
+        type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585548050828845076, guid: a05641553e7b191448d8af0b4c0c9ca8,
+        type: 3}
+      propertyPath: jumpPower
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585548050828845076, guid: a05641553e7b191448d8af0b4c0c9ca8,
+        type: 3}
+      propertyPath: crouchingSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4585548050828845076, guid: a05641553e7b191448d8af0b4c0c9ca8,
+        type: 3}
+      propertyPath: sprintingSpeed
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4585548050828845078, guid: a05641553e7b191448d8af0b4c0c9ca8,
         type: 3}

@@ -38,7 +38,10 @@ public class Enemy : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        StartCoroutine(CheckForPlayer());
+        if(state != EnemyState.Dead)
+        {
+            StartCoroutine(CheckForPlayer());
+        }
 
         if (state == EnemyState.Patrolling)
         {

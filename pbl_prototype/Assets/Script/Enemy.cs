@@ -115,7 +115,7 @@ public class Enemy : MonoBehaviour, IInteractable
         
         Vector3 playerPosition = player.transform.position;
         Vector3 vectorToPlayer = playerPosition - transform.position;
-        float differenceInHeight = transform.position.y - playerPosition.y;
+        float differenceInHeight = Mathf.Abs(transform.position.y - playerPosition.y);
         playerPosition.y = transform.position.y;
         Vector3 vectorToPlayerNoY = playerPosition - transform.position;
         

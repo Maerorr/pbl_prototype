@@ -223,7 +223,6 @@ MonoBehaviour:
   crouchingSpeed: 3
   sprintingSpeed: 7
   rotationSmoothTime: 0.1
-  rb: {fileID: 529284504}
   gravity: 9.8
   gravityMultiplier: 2
   groundedGravity: 2

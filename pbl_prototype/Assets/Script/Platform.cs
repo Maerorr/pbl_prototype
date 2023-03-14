@@ -28,7 +28,7 @@ public class Platform : HackableObject
         StartRotation = ObjectToMove.transform.rotation;
         float distance = Vector3.Distance(StartPoint, EndPoint.transform.position);
     }
-
+    
     void FixedUpdate()
     {
         if (ObjectToMove == null || EndPoint == null || !IsHacking)

@@ -12,6 +12,7 @@ public class Movement : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] private float crouchingSpeed;
     [SerializeField] private float sprintingSpeed;
+    [SerializeField] private float distactionRadius = 2.5f;
     [SerializeField] float rotationSmoothTime;
     private float currentSpeed;
     private bool isSprinting = false;
@@ -196,6 +197,17 @@ public class Movement : MonoBehaviour
             {
                 currentSpeed = sprintingSpeed;
                 isSprinting = true;
+                
+                var collidersDistraction = Physics.OverlapSphere(transform.position, distactionRadius);
+                for (int i = 0; i < collidersDistraction.Length; i++)
+                {
+                    var currentCollider = collidersDistraction[i];
+            
+                    if (currentCollider.TryGetComponent(out Enemy enemy))
+                    {
+                        enemy.OnDistracted(this.gameObject);
+                    }
+                }
             }
             else
             {
@@ -215,4 +227,15 @@ public class Movement : MonoBehaviour
             crouchingCooldown--;
         }
     }
+    
+    void OnDrawGizmos()
+    {
+        if (isSprinting)
+        {
+            // Draw a yellow sphere at the transform's position        
+            Gizmos.color = Color.yellow;                               
+            Gizmos.DrawSphere(transform.position, distactionRadius);
+        }
+    }
+    
 }

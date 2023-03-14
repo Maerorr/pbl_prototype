@@ -238,15 +238,5 @@ public class Movement : MonoBehaviour
             crouchingCooldown--;
         }
     }
-    
-    void OnDrawGizmos()
-    {
-        if (isSprinting)
-        {
-            // Draw a yellow sphere at the transform's position        
-            Gizmos.color = Color.yellow;                               
-            Gizmos.DrawSphere(transform.position, distactionRadius);
-        }
-    }
-    
+
 }

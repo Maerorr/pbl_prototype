@@ -38,16 +38,10 @@ public class Enemy : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        if (patrolPoints.Length == 0) return;
+        StartCoroutine(CheckForPlayer());
 
         if (state == EnemyState.Patrolling)
         {
-            StartCoroutine(CheckForPlayer());
-            Debug.DrawRay(transform.position,
-                Quaternion.AngleAxis(visionAngle, Vector3.up) * transform.forward * visionRange, Color.white);
-            Debug.DrawRay(transform.position,
-                Quaternion.AngleAxis(-visionAngle, Vector3.up) * transform.forward * visionRange, Color.white);
-            
             var currentPos = new Vector3(transform.position.x, 0, transform.position.z);
             var nextPatrolPoint = new Vector3(patrolPoints[current].position.x, 0, patrolPoints[current].position.z);
             
@@ -111,6 +105,11 @@ public class Enemy : MonoBehaviour, IInteractable
 
     IEnumerator CheckForPlayer()
     {
+        Debug.DrawRay(transform.position,
+            Quaternion.AngleAxis(visionAngle, Vector3.up) * transform.forward * visionRange, Color.white);
+        Debug.DrawRay(transform.position,
+            Quaternion.AngleAxis(-visionAngle, Vector3.up) * transform.forward * visionRange, Color.white);
+        
         seenPlayer = false;
         
         Vector3 playerPosition = player.transform.position;

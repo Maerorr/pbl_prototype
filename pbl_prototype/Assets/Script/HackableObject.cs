@@ -7,7 +7,7 @@ public abstract class HackableObject : MonoBehaviour
     protected Renderer renderer;
     
     [SerializeField]
-    bool canBeHackedDirectly = true;
+    protected bool canBeHackedDirectly = true;
 
     [SerializeField]
     public bool needsMinigame = false;

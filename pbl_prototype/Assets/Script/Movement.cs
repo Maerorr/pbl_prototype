@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -16,6 +17,7 @@ public class Movement : MonoBehaviour
     [SerializeField] float rotationSmoothTime;
     private float currentSpeed;
     private bool isSprinting = false;
+    private TMP_Text stateText;
 
     [Header("Gravity")]
     [SerializeField] float gravity = 9.8f;
@@ -52,6 +54,7 @@ public class Movement : MonoBehaviour
         var eyesLocal = eyes.localPosition;
         defaultEyesPosition = new Vector3(eyesLocal.x, eyesLocal.y, eyesLocal.z);
         currentSpeed = speed;
+        stateText = GameObject.Find("PlayerStateText").GetComponent<TMP_Text>();
     }
 
     private void Update()
@@ -61,6 +64,14 @@ public class Movement : MonoBehaviour
         HandleMovement();
         HandleGravityAndJump();
         Crouch();
+        UpdateStateText();
+    }
+
+    private void UpdateStateText()
+    {
+        if (isCrouching) stateText.text = "Crouch";
+        else if (isSprinting) stateText.text = "Sprint";
+        else stateText.text = "Walk";
     }
 
     private void HandleInteract()

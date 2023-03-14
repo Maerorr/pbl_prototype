@@ -18,6 +18,9 @@ public class Enemy : MonoBehaviour, IInteractable
     private bool isLookingAtTarget = false;
     private Vector3 distraction;
     public bool continuePatrollingAfterDistraction = true;
+    
+    private bool seenPlayer = false;
+    private bool prevSawPlayer = false;
 
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject interactionIndicator;
@@ -106,14 +109,9 @@ public class Enemy : MonoBehaviour, IInteractable
         }
     }
 
-    void OnAlerted()
-    {
-        Player.AddDetection(Time.deltaTime);
-        Player.SetEnemyDetection(true);
-    }
-
     IEnumerator CheckForPlayer()
     {
+        seenPlayer = false;
         Vector3 playerPosition = player.transform.position;
         Vector3 vectorToPlayer = playerPosition - transform.position;
         //check if enemy can see player
@@ -127,19 +125,31 @@ public class Enemy : MonoBehaviour, IInteractable
                 if (hit.transform.gameObject == player)
                 {
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.green);
-                    OnAlerted();
+                    Player.AddDetection(Time.deltaTime);
+                    Player.SetEnemyDetection(true);
+                    seenPlayer = true;
                 }
                 else
                 {
-                    Player.SetEnemyDetection(false);
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.red);
                 }
             }
         }
-        else
+        
+        if (!seenPlayer && prevSawPlayer)
         {
             Player.SetEnemyDetection(false);
         }
+        
+        if (seenPlayer)
+        {
+            prevSawPlayer = true;
+        }
+        else
+        {
+            prevSawPlayer = false;
+        }
+        
         yield return new WaitForSeconds(.1f);
     }
 

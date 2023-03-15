@@ -18,9 +18,8 @@ public class Enemy : MonoBehaviour, IInteractable
     private bool isLookingAtTarget = false;
     private Vector3 distraction;
     public bool continuePatrollingAfterDistraction = true;
-    
-    private bool seenPlayer = false;
-    private bool prevSawPlayer = false;
+
+    private DetectionLevel detectionLevel;
 
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject interactionIndicator;
@@ -33,6 +32,8 @@ public class Enemy : MonoBehaviour, IInteractable
         state = EnemyState.Patrolling;
         current = 0;
         interactionIndicator.SetActive(false);
+        detectionLevel = GetComponent<DetectionLevel>();
+        detectionLevel.SetAddAmount(1f);
     }
 
     // Update is called once per frame
@@ -112,9 +113,7 @@ public class Enemy : MonoBehaviour, IInteractable
             Quaternion.AngleAxis(visionAngle, Vector3.up) * transform.forward * visionRange, Color.white);
         Debug.DrawRay(transform.position,
             Quaternion.AngleAxis(-visionAngle, Vector3.up) * transform.forward * visionRange, Color.white);
-        
-        seenPlayer = false;
-        
+
         Vector3 playerPosition = player.transform.position;
         Vector3 vectorToPlayer = playerPosition - transform.position;
         float differenceInHeight = Mathf.Abs(transform.position.y - playerPosition.y);
@@ -133,29 +132,18 @@ public class Enemy : MonoBehaviour, IInteractable
                 if (hit.transform.gameObject == player)
                 {
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.green);
-                    Player.AddDetection(Time.deltaTime);
-                    Player.SetEnemyDetection(true);
-                    seenPlayer = true;
+                    detectionLevel.SetDetection(true);
                 }
                 else
                 {
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.red);
+                    detectionLevel.SetDetection(false);
                 }
             }
         }
-        
-        if (!seenPlayer && prevSawPlayer)
-        {
-            Player.SetEnemyDetection(false);
-        }
-        
-        if (seenPlayer)
-        {
-            prevSawPlayer = true;
-        }
         else
         {
-            prevSawPlayer = false;
+            detectionLevel.SetDetection(false);
         }
         
         yield return new WaitForSeconds(.1f);

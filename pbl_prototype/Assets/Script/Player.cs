@@ -114,4 +114,9 @@ public class Player : MonoBehaviour
     {
         instance.enemyDetection = value;
     }
+
+    public static float CalculateDetectionValue(float value)
+    {
+        return instance.isSprinting ? value * instance.sprintDetectionMultiplier : value;
+    }
 }

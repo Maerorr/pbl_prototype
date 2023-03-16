@@ -40,11 +40,17 @@ public class ExplodingBox : HackableObject
             }
         }
         
+        Invoke(nameof(DisableGameObject), explosionParticles.main.duration);
     }
     
     public override bool CanHack()
     {
         return !HasExploded;
+    }
+
+    private void DisableGameObject()
+    {
+        gameObject.SetActive(false);
     }
     
 }

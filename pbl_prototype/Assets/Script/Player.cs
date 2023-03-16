@@ -51,16 +51,16 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (detectionLevel > 0f && !cameraDetection && !enemyDetection)
-        {
-            detectionLevel -= Time.deltaTime;
-        }
-        
-        detectionSlider.value = detectionLevel;
-        if (detectionLevel >= maxDetectionLevel)
-        {
-            GameOver.RestartGame();
-        }
+        // if (detectionLevel > 0f && !cameraDetection && !enemyDetection)
+        // {
+        //     detectionLevel -= Time.deltaTime;
+        // }
+        //
+        // detectionSlider.value = detectionLevel;
+        // if (detectionLevel >= maxDetectionLevel)
+        // {
+        //     GameOver.RestartGame();
+        // }
         
         CheckCameraPosition();
     }

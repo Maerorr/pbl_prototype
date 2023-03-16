@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class DetectionLevel : MonoBehaviour
 {
+    [SerializeField] private Renderer objectRenderer;
+    [SerializeField] private bool changeColor = false;
     private Color originalColor;
-    private Renderer objectRenderer;
-    private float detectionLevel = 0f;
+    public float DetectionValue { get; private set; } = 0f;
     private float detectionLevelMax = 1f;
     private float addAmount;
     
@@ -19,7 +20,6 @@ public class DetectionLevel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        objectRenderer = transform.Find("Capsule").gameObject.GetComponent<Renderer>();
         originalColor = objectRenderer.material.color;
     }
 
@@ -28,10 +28,13 @@ public class DetectionLevel : MonoBehaviour
     {
         float addAmountWithTime = Time.deltaTime * addAmount;
         addAmountWithTime = Player.CalculateDetectionValue(addAmountWithTime);
-        detectionLevel = isDetecting ? detectionLevel + addAmountWithTime : detectionLevel - addAmountWithTime;
-        detectionLevel = Mathf.Clamp(detectionLevel, 0f, detectionLevelMax);
-        ChangeObjectColor();
-        if (Math.Abs(detectionLevel - detectionLevelMax) < Tolerance)
+        DetectionValue = isDetecting ? DetectionValue + addAmountWithTime : DetectionValue - addAmountWithTime;
+        DetectionValue = Mathf.Clamp(DetectionValue, 0f, detectionLevelMax);
+        if (changeColor)
+        {
+            ChangeObjectColor();
+        }
+        if (Math.Abs(DetectionValue - detectionLevelMax) < Tolerance)
         {
             GameOver.RestartGame();
         }
@@ -46,10 +49,15 @@ public class DetectionLevel : MonoBehaviour
     {
         addAmount = newAmount;
     }
+
+    public float GetDetectionLevel()
+    {
+        return DetectionValue;
+    }
     
     private void ChangeObjectColor()
     {
-        Color newColor = Color.Lerp(originalColor, Color.red, detectionLevel);
+        Color newColor = Color.Lerp(originalColor, Color.red, DetectionValue);
         objectRenderer.material.color = newColor;
     }
 }

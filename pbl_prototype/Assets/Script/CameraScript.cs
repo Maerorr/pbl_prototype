@@ -16,6 +16,8 @@ public class CameraScript : MonoBehaviour
     private GameObject body;
     private GameObject lens;
     
+    private DetectionLevel detectionLevel;
+    
     private bool isHacked = false;
 
     [SerializeField]
@@ -49,6 +51,8 @@ public class CameraScript : MonoBehaviour
         startYaw = cameraBody.eulerAngles.y;
         pitch = startPitch;
         yaw = startYaw;
+        detectionLevel = GetComponent<DetectionLevel>();
+        detectionLevel.SetAddAmount(1f);
     }
 
     void Update()
@@ -107,7 +111,7 @@ public class CameraScript : MonoBehaviour
     public void StopLookingForPlayer()
     {
         StopAllCoroutines();
-        Player.SetCameraDetection(false);
+        detectionLevel.SetDetection(false);
     }
 
     IEnumerator LookingForPlayer()
@@ -125,14 +129,17 @@ public class CameraScript : MonoBehaviour
                 if (hit.transform.gameObject == player)
                 {
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.green);
-                    Player.AddDetection(Time.deltaTime);
-                    Player.SetCameraDetection(true);
+                    detectionLevel.SetDetection(true);
                 }
                 else
                 {
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.red);
-                    Player.SetCameraDetection(false);
+                    detectionLevel.SetDetection(false);
                 }
+            }
+            else
+            {
+                detectionLevel.SetDetection(false);
             }
             yield return new WaitForSeconds(Time.deltaTime);
         }

@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 4983697505416390386}
   - component: {fileID: 4788380686002160345}
   - component: {fileID: 4123565656571610833}
+  - component: {fileID: 5107430676607040000}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -81,6 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   detectionRange: 10
   cameraFov: 50
+  maxSideRotation: 45
   cameraBody: {fileID: 4454338001929511470}
   detectionTriangle: {fileID: 2941428693274201575}
   triangleMesh: {fileID: 1420712808302000659}
@@ -100,6 +102,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5107430676607040000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3405325169477962626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271b4031154cddf4bbabe8ea16cce88f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectRenderer: {fileID: 3948254557743208764}
+  changeColor: 0
 --- !u!1 &3475292862300116848
 GameObject:
   m_ObjectHideFlags: 0

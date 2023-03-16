@@ -380,6 +380,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 271b4031154cddf4bbabe8ea16cce88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectRenderer: {fileID: 87553456103403835}
+  changeColor: 1
 --- !u!1001 &2793644822078051642
 PrefabInstance:
   m_ObjectHideFlags: 0

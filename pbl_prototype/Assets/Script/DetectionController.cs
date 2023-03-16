@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class DetectionController : MonoBehaviour
 {
     [SerializeField] private Slider detectionSlider;
+    [SerializeField] private bool detectPlayers = true;
     private List<DetectionLevel> detectionLevels;
     void Start()
     {
@@ -18,11 +19,17 @@ public class DetectionController : MonoBehaviour
             var t = detections[index];
             detectionLevels.Add(t);
         }
+
+        if (!detectPlayers)
+        {
+            detectionLevels.ForEach(d => d.SetDetectPlayers(false));
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!detectPlayers) return;
         UpdateBarWithHighestDetectionLevel();
     }
     

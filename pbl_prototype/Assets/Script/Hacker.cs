@@ -25,6 +25,7 @@ public class Hacker : MonoBehaviour
     
     private CameraScript currentCamera;
     private CameraScript lookAtCamera;
+    private CameraScript previousCamera;
 
     private bool isLookingAtCamera = false;
 
@@ -68,7 +69,7 @@ public class Hacker : MonoBehaviour
     private void MoveToNewCamera(CameraScript newCamera)
     {
         currentCamera?.SetHacked(false);
-        currentCamera?.SwitchHighlight(false);
+        previousCamera = currentCamera;
         currentCamera = newCamera;
         currentActualCamera.fieldOfView = newCamera.cameraFov;
         StartCoroutine(MoveTowardsNewCamera());
@@ -109,7 +110,7 @@ public class Hacker : MonoBehaviour
         {
             isLookingAtCamera = true;
             lookAtCamera = foundCamera;
-            lookAtCamera.SwitchHighlight(true);
+            lookAtCamera.SwitchHighlight();
         }
         else if (hit.transform.gameObject.TryGetComponent(out HackableObject hackableThing))
         {
@@ -137,7 +138,6 @@ public class Hacker : MonoBehaviour
         }
         else if (isLookingAtCamera)
         {
-            lookAtCamera.SwitchHighlight(false);
             isLookingAtCamera = false;
         }
     }
@@ -156,5 +156,13 @@ public class Hacker : MonoBehaviour
         isPlayingMinigame = false;
         minigame.gameObject.SetActive(false);
         hackableObject.OnHack();
+    }
+    
+    public void ReturnToPreviousCamera()
+    {
+        if (currentCamera.IsPortable())
+        {
+            MoveToNewCamera(previousCamera);
+        }
     }
 }

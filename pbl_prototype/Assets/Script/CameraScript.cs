@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 [ExecuteInEditMode]
 public class CameraScript : MonoBehaviour
@@ -18,7 +19,10 @@ public class CameraScript : MonoBehaviour
     
     private DetectionLevel detectionLevel;
     
+    private Coroutine highlightCoroutine;
+
     private bool isHacked = false;
+    [SerializeField] bool isPortable = false;
 
     [SerializeField]
     float detectionRange = 5f;
@@ -51,12 +55,19 @@ public class CameraScript : MonoBehaviour
         startYaw = cameraBody.eulerAngles.y;
         pitch = startPitch;
         yaw = startYaw;
+        if (isPortable)
+        {
+            detectionTriangle = null;
+            triangleMesh = null;
+            return;
+        }
         detectionLevel = GetComponent<DetectionLevel>();
         detectionLevel.SetAddAmount(1f);
     }
 
     void Update()
     {
+        if (isPortable) return;
         // Rotate detection triangle
         detectionTriangle.eulerAngles = new Vector3(0, cameraBody.eulerAngles.y, cameraBody.eulerAngles.z);
         
@@ -66,6 +77,7 @@ public class CameraScript : MonoBehaviour
     
     public void SetHacked(bool hacked)
     {
+        if (isPortable) return;
         triangleMesh.GetComponent<Renderer>().material = hacked ? currentlyHackedMaterial : originalMaterial;
         isHacked = hacked;
     }
@@ -92,13 +104,27 @@ public class CameraScript : MonoBehaviour
         cameraBody.eulerAngles = new Vector3(pitch, yaw, 0.0f);
     }
 
-    public void SwitchHighlight(bool highlight)
+    public void SwitchHighlight()
+    {
+        if (highlightCoroutine is not null)
+        {
+            StopCoroutine(highlightCoroutine);
+        }
+        highlightCoroutine = StartCoroutine(Highlight());
+    }
+
+    private IEnumerator Highlight()
     {
         Renderer bodyRenderer = body.GetComponent<Renderer>();
-        bodyRenderer.material.color = highlight ? Color.green : Color.black;
+        bodyRenderer.material.color = Color.green;
         
         Renderer lensRenderer = lens.GetComponent<Renderer>();
-        lensRenderer.material.color = highlight ? Color.green : Color.white;
+        lensRenderer.material.color = Color.green;
+
+        yield return new WaitForSeconds(0.1f);
+        
+        bodyRenderer.material.color = Color.black;
+        lensRenderer.material.color = Color.white;
     }
 
     public void ShootRaycastAtPlayer()
@@ -143,5 +169,10 @@ public class CameraScript : MonoBehaviour
             }
             yield return new WaitForSeconds(Time.deltaTime);
         }
+    }
+
+    public bool IsPortable()
+    {
+        return isPortable;
     }
 }

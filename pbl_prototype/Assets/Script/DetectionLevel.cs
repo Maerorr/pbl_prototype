@@ -13,6 +13,7 @@ public class DetectionLevel : MonoBehaviour
     private float addAmount;
     
     private bool isDetecting = false;
+    private bool detectPlayers = true;
     
     private const float Tolerance = 0.01f;
     
@@ -26,6 +27,8 @@ public class DetectionLevel : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (!detectPlayers) return;
+        
         float addAmountWithTime = Time.deltaTime * addAmount;
         addAmountWithTime = Player.CalculateDetectionValue(addAmountWithTime);
         DetectionValue = isDetecting ? DetectionValue + addAmountWithTime : DetectionValue - addAmountWithTime;
@@ -59,5 +62,10 @@ public class DetectionLevel : MonoBehaviour
     {
         Color newColor = Color.Lerp(originalColor, Color.red, DetectionValue);
         objectRenderer.material.color = newColor;
+    }
+    
+    public void SetDetectPlayers(bool detect)
+    {
+        detectPlayers = detect;
     }
 }

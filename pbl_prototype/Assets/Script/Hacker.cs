@@ -122,7 +122,7 @@ public class Hacker : MonoBehaviour
             
             // Check if gamepad X button is pressed
             var xPressed = Gamepad.current?.buttonWest.isPressed ?? false;
-            if (Input.GetKey(KeyCode.Comma) || xPressed)
+            if (hackableObject.canBeHackedDirectly && (Input.GetKey(KeyCode.Comma) || xPressed))
             {
                 if (hackableThing.needsMinigame)
                 {

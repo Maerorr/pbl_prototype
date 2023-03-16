@@ -86,11 +86,12 @@ public class Movement : MonoBehaviour
                 canInteract = true;
                 lastInteractable = interactable;
                 interactable.OnHover();
-                
                 if (Input.GetKeyDown(KeyCode.E))
                 {
+                    Debug.Log("CLICKED E");
                     if (interactable.CanInteract())
                     {
+                        Debug.Log("INTERACTION EXEC");
                         interactable.Interact();
                     }
                 } 

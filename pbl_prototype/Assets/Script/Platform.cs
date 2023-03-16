@@ -63,8 +63,8 @@ public class Platform : HackableObject
     
     public override void OnHack()
     {
-        if (!canBeHackedDirectly)
-            return;
+        //if (!canBeHackedDirectly)
+        //    return;
         IsHacking = true;
     }
     

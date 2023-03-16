@@ -6,8 +6,7 @@ public abstract class HackableObject : MonoBehaviour
     protected UnityEngine.Color originalColor;
     protected Renderer renderer;
     
-    [SerializeField]
-    protected bool canBeHackedDirectly = true;
+    public bool canBeHackedDirectly = true;
 
     [SerializeField]
     public bool needsMinigame = false;

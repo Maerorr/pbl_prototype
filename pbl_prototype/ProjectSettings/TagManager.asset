@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PlayerCamera
   - Wall
+  - CameraAttachable
   layers:
   - Default
   - TransparentFX

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5881803314369001734}
   - component: {fileID: 5881803314369001731}
   - component: {fileID: 5881803314369001728}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Lens
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,13 +94,13 @@ GameObject:
   - component: {fileID: 5881803314420597472}
   - component: {fileID: 5881803314420597479}
   - component: {fileID: 5881803314420597476}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PortableCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5881803314420597472
 Transform:
   m_ObjectHideFlags: 0
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 5881803315643883855}
   - component: {fileID: 5881803315643883848}
   - component: {fileID: 5881803315643883849}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

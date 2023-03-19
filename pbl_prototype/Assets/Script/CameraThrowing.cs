@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -11,9 +12,17 @@ public class CameraThrowing : MonoBehaviour
     [SerializeField] private Transform realRaycastOrigin;
     [SerializeField] private float maxDistance = 10f;
     [SerializeField] private float pickupDistance = 3f;
+    [SerializeField] private LayerMask raycastLayerMask;
+    
+    
+    [Tooltip("Wall if empty")]
+    [SerializeField] private string cameraThrowTag = "Wall";
+    
+    
 
     [SerializeField] private Hacker hacker;
 
+    private Vector3 firstSpawnLocation;
     private Vector3 cameraThrowPosition;
     private GameObject cameraPreview;
     private GameObject portableCamera;
@@ -23,10 +32,12 @@ public class CameraThrowing : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cameraPreview = Instantiate(cameraPreviewPrefab, raycastOrigin.position, Quaternion.identity);
+        firstSpawnLocation = new Vector3(0f, -50f, 0f);
+        
+        cameraPreview = Instantiate(cameraPreviewPrefab, firstSpawnLocation, Quaternion.identity);
         cameraPreview.SetActive(false);
         
-        portableCamera = Instantiate(portableCameraPrefab, raycastOrigin.position, Quaternion.identity);
+        portableCamera = Instantiate(portableCameraPrefab, firstSpawnLocation, Quaternion.identity);
         portableCamera.SetActive(false);
     }
 
@@ -44,6 +55,7 @@ public class CameraThrowing : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) && !cameraThrown)
         {
             isThrowing = !isThrowing;
+            cameraPreview.SetActive(isThrowing);
         }
         
         if (isThrowing)
@@ -81,23 +93,33 @@ public class CameraThrowing : MonoBehaviour
     private void ShowPreview()
     {
         cameraPreview.SetActive(true);
-        
 
-        if (!Physics.Raycast(raycastOrigin.position, raycastOrigin.forward, out var hit, maxDistance))
+        if (!Physics.Raycast(
+                origin: raycastOrigin.position,
+                direction: raycastOrigin.forward,
+                hitInfo: out var hit,
+                maxDistance: maxDistance,
+                layerMask: raycastLayerMask))
+        {
+            cameraPreview.transform.position = firstSpawnLocation;
             return;
+        }
         
         var direction = hit.point - realRaycastOrigin.position;
         Debug.DrawRay(realRaycastOrigin.position, direction, Color.white);
 
-        Debug.Log(hit.transform.gameObject.tag);
-        
-        if (hit.transform.gameObject.CompareTag("Wall"))
+        if (hit.transform.gameObject.CompareTag(cameraThrowTag))
         {
             cameraPreview.SetActive(true);
             cameraPreview.transform.position = hit.point;
             cameraPreview.transform.rotation = Quaternion.LookRotation(hit.normal);
 
             cameraThrowPosition = hit.point;
+        }
+        else
+        {
+            Debug.Log(hit.transform.gameObject.tag);
+            cameraPreview.transform.position = firstSpawnLocation;
         }
     }
 }

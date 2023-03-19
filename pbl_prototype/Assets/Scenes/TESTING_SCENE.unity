@@ -15308,6 +15308,11 @@ PrefabInstance:
       propertyPath: hacker
       value: 
       objectReference: {fileID: 958714665}
+    - target: {fileID: 8741174208682252546, guid: a05641553e7b191448d8af0b4c0c9ca8,
+        type: 3}
+      propertyPath: raycastLayerMask.m_Bits
+      value: 243
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a05641553e7b191448d8af0b4c0c9ca8, type: 3}
 --- !u!20 &886268269 stripped
@@ -35730,11 +35735,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PortableCamera
-      objectReference: {fileID: 0}
-    - target: {fileID: 5881803314420597477, guid: 62fda00ebcf213e4aa1b8a47f8811694,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62fda00ebcf213e4aa1b8a47f8811694, type: 3}

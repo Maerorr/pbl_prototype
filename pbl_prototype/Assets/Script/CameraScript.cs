@@ -175,4 +175,12 @@ public class CameraScript : MonoBehaviour
     {
         return isPortable;
     }
+    
+    public void SetNewPitchYawForPortableCamera(Quaternion rotation)
+    {
+        pitch = rotation.eulerAngles.x;
+        yaw = rotation.eulerAngles.y;
+        startPitch = pitch;
+        startYaw = yaw;
+    }
 }

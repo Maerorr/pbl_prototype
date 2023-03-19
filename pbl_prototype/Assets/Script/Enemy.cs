@@ -128,7 +128,7 @@ public class Enemy : MonoBehaviour, IInteractable
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, visionRange + differenceInHeight * 5f))
             {
-                Debug.Log(hit.transform.gameObject);
+                //Debug.Log(hit.transform.gameObject);
                 if (hit.transform.gameObject == player)
                 {
                     Debug.DrawRay(transform.position, vectorToPlayer, Color.green);

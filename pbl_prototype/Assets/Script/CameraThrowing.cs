@@ -71,6 +71,8 @@ public class CameraThrowing : MonoBehaviour
                     portableCamera.transform.position = cameraThrowPosition;
                     portableCamera.transform.rotation = cameraPreview.transform.rotation;
                     portableCamera.SetActive(true);
+                    var cam = portableCamera.GetComponent<CameraScript>();
+                    cam.SetNewPitchYawForPortableCamera(portableCamera.transform.rotation);
                 }
             }
         }
@@ -113,6 +115,9 @@ public class CameraThrowing : MonoBehaviour
             cameraPreview.SetActive(true);
             cameraPreview.transform.position = hit.point;
             cameraPreview.transform.rotation = Quaternion.LookRotation(hit.normal);
+            
+            Debug.DrawRay(cameraPreview.transform.position, hit.normal, Color.green);
+            Debug.DrawRay(cameraPreview.transform.position, cameraPreview.transform.rotation.eulerAngles, Color.yellow);
 
             cameraThrowPosition = hit.point;
         }

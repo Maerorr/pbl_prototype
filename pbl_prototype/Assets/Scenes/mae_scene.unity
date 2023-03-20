@@ -19340,6 +19340,16 @@ PrefabInstance:
       objectReference: {fileID: 2025733049}
     - target: {fileID: 3006759300379184904, guid: 3282ca5d690e63a4290c28819141b123,
         type: 3}
+      propertyPath: visionAngle
+      value: 36.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006759300379184904, guid: 3282ca5d690e63a4290c28819141b123,
+        type: 3}
+      propertyPath: visionRange
+      value: 3.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3006759300379184904, guid: 3282ca5d690e63a4290c28819141b123,
+        type: 3}
       propertyPath: interactionIndicator
       value: 
       objectReference: {fileID: 1650342957}
@@ -56497,6 +56507,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1969747971}
     m_Modifications:
+    - target: {fileID: 2972244250095387529, guid: 3282ca5d690e63a4290c28819141b123,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.6788794
+      objectReference: {fileID: 0}
+    - target: {fileID: 2972244250095387529, guid: 3282ca5d690e63a4290c28819141b123,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.6788794
+      objectReference: {fileID: 0}
+    - target: {fileID: 2972244250095387529, guid: 3282ca5d690e63a4290c28819141b123,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.6788794
+      objectReference: {fileID: 0}
     - target: {fileID: 3006759300379184904, guid: 3282ca5d690e63a4290c28819141b123,
         type: 3}
       propertyPath: player
@@ -64974,7 +64999,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1999485063}
   m_LocalRotation: {x: -0, y: 0.09511089, z: -0, w: 0.9954667}
-  m_LocalPosition: {x: 0.825, y: 3.342669, z: -0.241}
+  m_LocalPosition: {x: 0.82, y: 3.342669, z: -0.302}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -65013,8 +65038,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 9.2
-  m_Range: 25
+  m_Intensity: 43.9
+  m_Range: 18.82
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -65022,7 +65047,7 @@ Light:
     m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 0.555
+    m_Strength: 0.484
     m_Bias: 0.05
     m_NormalBias: 0.4
     m_NearPlane: 0.2
@@ -65056,7 +65081,7 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 4239
+  m_ColorTemperature: 4888
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0

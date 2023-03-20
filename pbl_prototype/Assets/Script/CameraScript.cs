@@ -116,15 +116,25 @@ public class CameraScript : MonoBehaviour
     private IEnumerator Highlight()
     {
         Renderer bodyRenderer = body.GetComponent<Renderer>();
-        bodyRenderer.material.color = Color.green;
-        
+        //bodyRenderer.material.color = Color.green;
+        // enable emmision and set its color to green
+        bodyRenderer.material.EnableKeyword("_EMISSION");
+        bodyRenderer.material.SetColor("_EmissionColor", Color.green);
+
         Renderer lensRenderer = lens.GetComponent<Renderer>();
-        lensRenderer.material.color = Color.green;
+        //lensRenderer.material.color = Color.green;
+        lensRenderer.material.EnableKeyword("_EMISSION");
+        lensRenderer.material.SetColor("_EmissionColor", Color.green);
 
         yield return new WaitForSeconds(0.1f);
         
-        bodyRenderer.material.color = Color.black;
-        lensRenderer.material.color = Color.white;
+        //bodyRenderer.material.color = Color.black;
+        bodyRenderer.material.EnableKeyword("_EMISSION");
+        bodyRenderer.material.SetColor("_EmissionColor", Color.black);
+        
+        lensRenderer.material.EnableKeyword("_EMISSION");
+        lensRenderer.material.SetColor("_EmissionColor", Color.black);
+        //lensRenderer.material.color = Color.white;
     }
 
     public void ShootRaycastAtPlayer()

@@ -30,9 +30,9 @@ public class Player : MonoBehaviour
 
     [SerializeField] private float sprintDetectionMultiplier = 1.5f;
 
-    private static float detectionSpeed = 1.0f;
+    private static float detectionSpeed = 0.0f;
 
-    [SerializeField] private float detectionSpeedMultiplier = 1.0f;
+    [SerializeField] private float detectionSpeedMultiplier = 0.1f;
     
     // Start is called before the first frame update
     void Start()

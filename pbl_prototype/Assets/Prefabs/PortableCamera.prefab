@@ -145,7 +145,7 @@ MonoBehaviour:
   isPortable: 1
   detectionRange: 5
   cameraFov: 45
-  maxSideRotation: 45
+  maxSideRotation: 90
   cameraBody: {fileID: 5881803314420597472}
   detectionTriangle: {fileID: 0}
   triangleMesh: {fileID: 0}

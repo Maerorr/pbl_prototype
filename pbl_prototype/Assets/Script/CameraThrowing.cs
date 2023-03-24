@@ -47,7 +47,7 @@ public class CameraThrowing : MonoBehaviour
         var inPickupDistance = Vector3.Distance(transform.position, portableCamera.transform.position) < pickupDistance;
         if (cameraThrown && inPickupDistance)
         {
-            portableCamera.GetComponent<CameraScript>()
+            portableCamera.GetComponentInChildren<CameraScript>()
                 .SwitchHighlight();
         }
         
@@ -71,7 +71,7 @@ public class CameraThrowing : MonoBehaviour
                     portableCamera.transform.position = cameraThrowPosition;
                     portableCamera.transform.rotation = cameraPreview.transform.rotation;
                     portableCamera.SetActive(true);
-                    var cam = portableCamera.GetComponent<CameraScript>();
+                    var cam = portableCamera.GetComponentInChildren<CameraScript>();
                     cam.SetNewPitchYawForPortableCamera(portableCamera.transform.rotation);
                 }
             }

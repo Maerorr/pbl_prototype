@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
@@ -21,7 +22,7 @@ public class CameraScript : MonoBehaviour
     
     private Coroutine highlightCoroutine;
 
-    private bool isHacked = false;
+    public bool isHacked = false;
     [SerializeField] bool isPortable = false;
 
     [SerializeField]
@@ -46,7 +47,9 @@ public class CameraScript : MonoBehaviour
     Material currentlyHackedMaterial;
     [SerializeField]
     Material originalMaterial;
-
+    
+    public UnityEvent onHacked = new UnityEvent();
+    
     private void Start()
     {
         body = transform.Find("Body").gameObject;
@@ -67,7 +70,10 @@ public class CameraScript : MonoBehaviour
 
     void Update()
     {
-        if (isPortable) return;
+        if (isPortable)
+        {
+            return;
+        }
         // Rotate detection triangle
         detectionTriangle.eulerAngles = new Vector3(0, cameraBody.eulerAngles.y, cameraBody.eulerAngles.z);
         
@@ -77,9 +83,10 @@ public class CameraScript : MonoBehaviour
     
     public void SetHacked(bool hacked)
     {
+        isHacked = hacked;
+        onHacked.Invoke();
         if (isPortable) return;
         triangleMesh.GetComponent<Renderer>().material = hacked ? currentlyHackedMaterial : originalMaterial;
-        isHacked = hacked;
     }
 
     public Transform GetCameraTransform()

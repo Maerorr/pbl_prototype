@@ -44,6 +44,11 @@ public class Hacker : MonoBehaviour
         minigame.gameObject.SetActive(false);
     }
 
+    private void Update()
+    {
+        //transform.position = Vector3.Lerp(transform.position, currentCamera.transform.position, Time.deltaTime * moveSpeed);
+    }
+
     void FixedUpdate()
     {
         if (!isPlayingMinigame)

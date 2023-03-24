@@ -33,20 +33,15 @@ public class PortableCameraMovement : MonoBehaviour
         float inputX = Input.GetKey(KeyCode.Keypad4) ? -1 : Input.GetKey(KeyCode.Keypad6) ? 1 : 0;
         float inputY = Input.GetKey(KeyCode.Keypad2) ? -1 : Input.GetKey(KeyCode.Keypad8) ? 1 : 0;
 
-        inputX = Gamepad.current?.leftStick.x.ReadValue() ?? inputX;
-        inputY = Gamepad.current?.leftStick.y.ReadValue() ?? inputY;
+        //inputX = Gamepad.current?.leftStick.x.ReadValue() ?? inputX;
+        //inputY = Gamepad.current?.leftStick.y.ReadValue() ?? inputY;
 
         RaycastHit leftHit, rightHit , topHit, bottomHit;
         Physics.Raycast(rayLeft.position, -rayLeft.forward, out leftHit, 1f);
         Physics.Raycast(rayRight.position, -rayRight.forward, out rightHit, 1f);
         Physics.Raycast(rayTop.position, -rayTop.forward, out topHit, 1f);
         Physics.Raycast(rayBottom.position, -rayBottom.forward, out bottomHit, 1f);
-        
-        //Debug.DrawRay(rayLeft.position, -rayLeft.forward, Color.red, 1f);
-        //Debug.DrawRay(rayRight.position, -rayRight.forward, Color.red, 1f);
-        //Debug.DrawRay(rayTop.position, -rayTop.forward, Color.red, 1f);
-        //Debug.DrawRay(rayBottom.position, -rayBottom.forward, Color.red, 1f);
-        
+
         if (leftHit.collider == null || leftHit.collider != null && leftHit.transform.tag != raycastCheckTag)
         {
             inputX = Math.Clamp(inputX, 0, 1);

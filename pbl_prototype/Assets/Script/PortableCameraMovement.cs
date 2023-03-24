@@ -42,22 +42,26 @@ public class PortableCameraMovement : MonoBehaviour
         Physics.Raycast(rayTop.position, -rayTop.forward, out topHit, 1f);
         Physics.Raycast(rayBottom.position, -rayBottom.forward, out bottomHit, 1f);
         
-        if (leftHit.collider != null && leftHit.transform.tag != raycastCheckTag)
+        //Debug.DrawRay(rayLeft.position, -rayLeft.forward, Color.red, 1f);
+        //Debug.DrawRay(rayRight.position, -rayRight.forward, Color.red, 1f);
+        //Debug.DrawRay(rayTop.position, -rayTop.forward, Color.red, 1f);
+        //Debug.DrawRay(rayBottom.position, -rayBottom.forward, Color.red, 1f);
+        
+        if (leftHit.collider == null || leftHit.collider != null && leftHit.transform.tag != raycastCheckTag)
         {
-            Debug.Log(leftHit.collider + "  tag: " + leftHit.transform.tag);
-            inputX = 0;
+            inputX = Math.Clamp(inputX, 0, 1);
         }
-        if (rightHit.collider != null && rightHit.transform.tag != raycastCheckTag)
+        if (rightHit.collider == null || rightHit.collider != null && rightHit.transform.tag != raycastCheckTag)
         {
-            inputX = 0;
+            inputX = Math.Clamp(inputX, -1, 0);
         }
-        if (topHit.collider != null && topHit.transform.tag != raycastCheckTag)
+        if (topHit.collider == null || topHit.collider != null && topHit.transform.tag != raycastCheckTag)
         {
-            inputY = 0;
+            inputY = Math.Clamp(inputY, -1, 0);
         }
-        if (bottomHit.collider != null && bottomHit.transform.tag != raycastCheckTag)
+        if (bottomHit.collider == null || bottomHit.collider != null && bottomHit.transform.tag != raycastCheckTag)
         {
-            inputY = 0;
+            inputY = Math.Clamp(inputY, 0, 1);
         }
         
         //move the camera up down left right relative to rotation variable that points foreward

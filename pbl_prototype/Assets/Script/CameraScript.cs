@@ -54,10 +54,10 @@ public class CameraScript : MonoBehaviour
     {
         body = transform.Find("Body").gameObject;
         lens = body.transform.Find("Lens").gameObject;
-        startPitch = cameraBody.eulerAngles.x;
-        startYaw = cameraBody.eulerAngles.y;
-        pitch = startPitch;
-        yaw = startYaw;
+        pitch = Quaternion.identity.eulerAngles.x;
+        yaw = Quaternion.identity.eulerAngles.y;
+        startPitch = pitch;
+        startYaw = yaw;
         if (isPortable)
         {
             detectionTriangle = null;
@@ -108,7 +108,7 @@ public class CameraScript : MonoBehaviour
         yaw = Mathf.Clamp(yaw, startYaw - maxSideRotation, startYaw + maxSideRotation);
         pitch = Mathf.Clamp(pitch, startPitch - 45f, startPitch + 45f);
  
-        cameraBody.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        cameraBody.localEulerAngles = new Vector3(pitch, yaw, 0.0f);
     }
 
     public void SwitchHighlight()
@@ -195,9 +195,14 @@ public class CameraScript : MonoBehaviour
     
     public void SetNewPitchYawForPortableCamera(Quaternion rotation)
     {
-        pitch = rotation.eulerAngles.x;
-        yaw = rotation.eulerAngles.y;
+        pitch = Quaternion.identity.eulerAngles.x;
+        yaw = Quaternion.identity.eulerAngles.y;
         startPitch = pitch;
         startYaw = yaw;
+        transform.localRotation = Quaternion.Euler(startPitch, startYaw, 0);
+        Debug.Log(startPitch + "  " + startYaw);
+        var par = GetComponentInParent<PortableCameraMovement>();
+        Debug.Log(rotation);
+        par.transform.rotation = rotation;
     }
 }

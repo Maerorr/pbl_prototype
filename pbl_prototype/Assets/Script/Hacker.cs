@@ -36,6 +36,8 @@ public class Hacker : MonoBehaviour
     
     // Hackable Object that we're currently looking at
     HackableObject hackableObject = null;
+
+    private bool isTransitioning = false;
     
     private void Start()
     {
@@ -46,7 +48,10 @@ public class Hacker : MonoBehaviour
 
     private void Update()
     {
-        //transform.position = Vector3.Lerp(transform.position, currentCamera.transform.position, Time.deltaTime * moveSpeed);
+        if (!isTransitioning)
+        {
+            MoveToCameraPosition();
+        }
     }
 
     void FixedUpdate()
@@ -77,9 +82,10 @@ public class Hacker : MonoBehaviour
         previousCamera = currentCamera;
         currentCamera = newCamera;
         currentActualCamera.fieldOfView = newCamera.cameraFov;
+        isTransitioning = true;
         StartCoroutine(MoveTowardsNewCamera());
         currentCamera?.SetHacked(true);
-
+        
         lastMove = Time.time;
     }
 
@@ -93,6 +99,8 @@ public class Hacker : MonoBehaviour
             transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, cameraTransform.eulerAngles, Time.deltaTime * moveSpeed);
             yield return null;
         }
+
+        isTransitioning = false;
     }
 
     private void RotateCamera()
@@ -169,5 +177,10 @@ public class Hacker : MonoBehaviour
         {
             MoveToNewCamera(previousCamera);
         }
+    }
+    
+    private void MoveToCameraPosition()
+    {
+        transform.position = Vector3.Lerp(transform.position, currentCamera.transform.position, Time.deltaTime * moveSpeed);
     }
 }

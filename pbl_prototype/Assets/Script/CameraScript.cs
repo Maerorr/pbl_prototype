@@ -35,6 +35,11 @@ public class CameraScript : MonoBehaviour
 
     [SerializeField]
     float maxSideRotation = 45f;
+    
+    [SerializeField]
+    float maxUpRotation = 45f;
+    [SerializeField]
+    float maxDownRotation = 45f;
 
     [SerializeField]
     Transform cameraBody;
@@ -118,7 +123,7 @@ public class CameraScript : MonoBehaviour
         pitch -= sensitivity * inputY;
 
         yaw = Mathf.Clamp(yaw, startYaw - maxSideRotation, startYaw + maxSideRotation);
-        pitch = Mathf.Clamp(pitch, startPitch - 45f, startPitch + 45f);
+        pitch = Mathf.Clamp(pitch, startPitch - maxUpRotation, startPitch + maxDownRotation);
 
         if (isSpider)
         {

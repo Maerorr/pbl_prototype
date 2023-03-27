@@ -24,6 +24,8 @@ public class CameraScript : MonoBehaviour
 
     public bool isHacked = false;
     [SerializeField] bool isPortable = false;
+    [SerializeField] private bool isSpider = false;
+    [SerializeField] private Transform spiderBody;
 
     [SerializeField]
     float detectionRange = 5f;
@@ -54,11 +56,21 @@ public class CameraScript : MonoBehaviour
     {
         body = transform.Find("Body").gameObject;
         lens = body.transform.Find("Lens").gameObject;
-        pitch = Quaternion.identity.eulerAngles.x;
-        yaw = Quaternion.identity.eulerAngles.y;
+        if (isSpider)
+        {
+            pitch = body.transform.eulerAngles.x;
+            Debug.Log(pitch);
+            yaw = body.transform.eulerAngles.y;
+            Debug.Log(yaw);
+        }
+        else
+        {
+            pitch = Quaternion.identity.eulerAngles.x;
+            yaw = Quaternion.identity.eulerAngles.y;
+        }
         startPitch = pitch;
         startYaw = yaw;
-        if (isPortable)
+        if (isPortable || isSpider)
         {
             detectionTriangle = null;
             triangleMesh = null;
@@ -70,7 +82,7 @@ public class CameraScript : MonoBehaviour
 
     void Update()
     {
-        if (isPortable)
+        if (isPortable || isSpider)
         {
             return;
         }
@@ -85,7 +97,7 @@ public class CameraScript : MonoBehaviour
     {
         isHacked = hacked;
         onHacked.Invoke();
-        if (isPortable) return;
+        if (isPortable || isSpider) return;
         triangleMesh.GetComponent<Renderer>().material = hacked ? currentlyHackedMaterial : originalMaterial;
     }
 
@@ -107,8 +119,16 @@ public class CameraScript : MonoBehaviour
 
         yaw = Mathf.Clamp(yaw, startYaw - maxSideRotation, startYaw + maxSideRotation);
         pitch = Mathf.Clamp(pitch, startPitch - 45f, startPitch + 45f);
- 
-        cameraBody.localEulerAngles = new Vector3(pitch, yaw, 0.0f);
+
+        if (isSpider)
+        {
+            spiderBody.eulerAngles += new Vector3(0.0f, inputX * sensitivity, 0.0f);
+            cameraBody.localEulerAngles = new Vector3(pitch, startYaw, 0.0f);
+        }
+        else
+        {
+            cameraBody.localEulerAngles = new Vector3(pitch, yaw, 0.0f);
+        }
     }
 
     public void SwitchHighlight()

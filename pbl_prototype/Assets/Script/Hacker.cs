@@ -39,8 +39,22 @@ public class Hacker : MonoBehaviour
 
     private bool isTransitioning = false;
     
+    [Header("If hacker is a spider")]
+    [SerializeField] private bool isSpider = false;
+    [SerializeField] private CameraScript spider;
+    
     private void Start()
     {
+        if (isSpider)
+        {
+            if (spider == null)
+            {
+                spider = startingCamera;   
+            }
+
+            //currentActualCamera.transform.position = new Vector3(0, 0, 0.1f);
+        }
+        
         MoveToNewCamera(startingCamera);
         lookAtCamera = currentCamera;
         minigame.gameObject.SetActive(false);
@@ -52,6 +66,7 @@ public class Hacker : MonoBehaviour
         {
             MoveToCameraPosition();
         }
+        ReturnToSpider();
     }
 
     void FixedUpdate()
@@ -114,12 +129,14 @@ public class Hacker : MonoBehaviour
         Transform currentTransform = transform;
         Vector3 shootPosition = currentTransform.position + currentTransform.forward;
         
-        Debug.DrawRay(shootPosition, currentTransform.forward * 100, Color.red);
-
         hackableObject = null;
+        CameraScript foundCamera = null;
 
-        if (!Physics.Raycast(currentTransform.position, currentTransform.forward, out var hit)) return;
-        if (hit.transform.gameObject.TryGetComponent(out CameraScript foundCamera))
+        Debug.DrawRay(shootPosition, currentTransform.forward * 100, Color.red);
+        if (!Physics.Raycast(shootPosition, currentTransform.forward, out var hit)) return;
+        foundCamera = hit.transform.gameObject.GetComponentInChildren<CameraScript>();
+        Debug.Log(hit.transform.name);
+        if (foundCamera != null)
         {
             isLookingAtCamera = true;
             lookAtCamera = foundCamera;
@@ -152,7 +169,7 @@ public class Hacker : MonoBehaviour
         else if (isLookingAtCamera)
         {
             isLookingAtCamera = false;
-        }
+        } 
     }
 
     public IEnumerator StartMinigame()
@@ -182,5 +199,18 @@ public class Hacker : MonoBehaviour
     private void MoveToCameraPosition()
     {
         transform.position = Vector3.Lerp(transform.position, currentCamera.transform.position, Time.deltaTime * moveSpeed);
+    }
+
+    private void ReturnToSpider()
+    {
+        if (isSpider)
+        {
+            if (Input.GetKey(KeyCode.Period))
+            {
+                //currentActualCamera.transform.position = new Vector3(0, 0, 0.1f);
+                Debug.Log("returning to spider");
+                MoveToNewCamera(spider);
+            }
+        }
     }
 }

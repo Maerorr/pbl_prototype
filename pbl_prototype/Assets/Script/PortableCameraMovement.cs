@@ -33,8 +33,8 @@ public class PortableCameraMovement : MonoBehaviour
         float inputX = Input.GetKey(KeyCode.Keypad4) ? -1 : Input.GetKey(KeyCode.Keypad6) ? 1 : 0;
         float inputY = Input.GetKey(KeyCode.Keypad2) ? -1 : Input.GetKey(KeyCode.Keypad8) ? 1 : 0;
 
-        //inputX = Gamepad.current?.leftStick.x.ReadValue() ?? inputX;
-        //inputY = Gamepad.current?.leftStick.y.ReadValue() ?? inputY;
+        inputX = Gamepad.current?.leftStick.x.ReadValue() ?? inputX;
+        inputY = Gamepad.current?.leftStick.y.ReadValue() ?? inputY;
 
         RaycastHit leftHit, rightHit , topHit, bottomHit;
         Physics.Raycast(rayLeft.position, -rayLeft.forward, out leftHit, 1f);

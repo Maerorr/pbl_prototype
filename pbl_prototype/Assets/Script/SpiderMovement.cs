@@ -49,6 +49,13 @@ public class SpiderMovement : MonoBehaviour
         //capturing Input from Player
         float inputX = Input.GetKey(KeyCode.Keypad4) ? -1 : Input.GetKey(KeyCode.Keypad6) ? 1 : 0;
         float inputZ = (Input.GetKey(KeyCode.Keypad2) ? -1 : Input.GetKey(KeyCode.Keypad8) ? 1 : 0);
+        
+        // get input from pad
+        if (Gamepad.current != null)
+        {
+            inputX = Gamepad.current.leftStick.ReadValue().x;
+            inputZ = Gamepad.current.leftStick.ReadValue().y;
+        }
 
 
         Vector3 movement = new Vector3(inputX, 0, inputZ).normalized;

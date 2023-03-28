@@ -135,7 +135,7 @@ public class Hacker : MonoBehaviour
         Debug.DrawRay(shootPosition, currentTransform.forward * 100, Color.red);
         if (!Physics.Raycast(shootPosition, currentTransform.forward, out var hit)) return;
         foundCamera = hit.transform.gameObject.GetComponentInChildren<CameraScript>();
-        Debug.Log(hit.transform.name);
+        
         if (foundCamera != null)
         {
             isLookingAtCamera = true;
@@ -205,7 +205,7 @@ public class Hacker : MonoBehaviour
     {
         if (isSpider)
         {
-            if (Input.GetKey(KeyCode.Period))
+            if (Input.GetKey(KeyCode.Period) || Gamepad.current?.buttonEast.isPressed == true)
             {
                 //currentActualCamera.transform.position = new Vector3(0, 0, 0.1f);
                 Debug.Log("returning to spider");

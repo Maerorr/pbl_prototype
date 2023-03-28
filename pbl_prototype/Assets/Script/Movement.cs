@@ -123,13 +123,13 @@ public class Movement : MonoBehaviour
         wholeMovement = new Vector3(movement.x, 0.0f, movement.z);
 
         // Rotate player with mouse
-        float camInputX = Input.GetAxisRaw("Mouse X") * 0.25f;
+        float camInputX = Input.GetAxis("Mouse X") * 0.25f;
         float targetAngle = currentAngle + camInputX * 360;
         currentAngle = Mathf.SmoothDampAngle(currentAngle, targetAngle, ref currentAngleVelocity, rotationSmoothTime);
         transform.rotation = Quaternion.Euler(0, currentAngle, 0);
         
         
-        float camInputY = Input.GetAxisRaw("Mouse Y") * 2.5f;
+        float camInputY = Input.GetAxis("Mouse Y") * 2.5f;
         cameraPivot.rotation = Quaternion.Euler(cameraPivot.rotation.eulerAngles.x - camInputY, cameraPivot.rotation.eulerAngles.y, cameraPivot.rotation.eulerAngles.z);
     }
 
